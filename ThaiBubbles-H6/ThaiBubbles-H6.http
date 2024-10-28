@@ -1,0 +1,6 @@
+@ThaiBubbles_H6_HostAddress = http://localhost:5274
+
+GET {{ThaiBubbles_H6_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
