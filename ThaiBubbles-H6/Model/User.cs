@@ -16,5 +16,8 @@ namespace ThaiBubbles_H6.Model
 
         public List<City?> Cities { get; set; } = new List<City?>(); // en til mange relation mellem User til City
         public List<Favorite?> FavoriteFk { get; set; } = new List<Favorite?>(); // en til mange relation mellem User til Favorite
+
+        [JsonIgnore]
+        public List<Order?> Order { get; set; } = new List<Order?>(); // en til mange relation mellem User til Order
     }
 }

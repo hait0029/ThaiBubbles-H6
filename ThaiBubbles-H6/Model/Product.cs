@@ -16,7 +16,7 @@ namespace ThaiBubbles_h6.Model
         public int price { get; set; } = 0;
 
         public string Description { get; set; } = string.Empty;
-        public bool Favorite { get; set; } = false;
+        //public bool Favorite { get; set; } = false;
 
         public int? CategoryId { get; set; }
         public Category? category { get; set; }
