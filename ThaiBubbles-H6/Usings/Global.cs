@@ -8,3 +8,4 @@ global using ThaiBubbles_H6.Interfaces;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Mvc;
 global using System.Text.Json.Serialization;
+global using ThaiBubbles_h6.Model;
