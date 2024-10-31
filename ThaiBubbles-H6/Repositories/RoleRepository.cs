@@ -1,6 +1,6 @@
 ﻿namespace ThaiBubbles_H6.Repositories
 {
-    public class RoleRepository
+    public class RoleRepository : IRoleRepositories
     {
         private DatabaseContext _context { get; set; }
         public RoleRepository(DatabaseContext context)

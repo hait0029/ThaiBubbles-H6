@@ -8,12 +8,71 @@ namespace ThaiBubbles_H6.Controllers
     public class UserController : ControllerBase
     {
         private IUserRepositories _userRepo;
-        
+        private readonly DatabaseContext _context;
 
-        public UserController(IUserRepositories temp)
+        public UserController(IUserRepositories temp, DatabaseContext context)
         {
             _userRepo = temp;
+            _context = context;
+
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] Login logins)
+        {
+            var token = await _userRepo.AuthenticateAsync(logins.Email, logins.Password);
+            if (token == null)
+                return Unauthorized(new { message = "Invalid email or password" });
+
+            return Ok(new { Token = token });
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] User registerLog)
+        {
+            try
+            {
+                // Check if email already exists
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == registerLog.Email);
+                if (existingUser != null)
+                {
+                    return BadRequest("User already exists");
+                }
+
+                // Hash Password
+                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerLog.Password);
+
+                // Create new user object
+                var newUser = new User
+                {
+                    Email = registerLog.Email,
+                    Password = hashedPassword,
+                    FName = registerLog.FName,
+                    LName = registerLog.LName,
+                    PhoneNr = registerLog.PhoneNr,
+                    Address = registerLog.Address,
+                    CityId = registerLog.CityId // Set CityId from the request
+                };
+
+                // Add user to database
+                _context.User.Add(newUser);
+                await _context.SaveChangesAsync();
+
+                // Optionally load the City data for response
+                await _context.Entry(newUser).Reference(u => u.Cities).LoadAsync();
+
+                return CreatedAtAction("Register", new { userId = newUser.UserID }, newUser);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while creating the User: {ex.Message}");
+            }
+        }
+
+
+
+
+
 
         [HttpGet]
         public async Task<ActionResult> getUsers()
