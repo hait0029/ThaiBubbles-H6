@@ -12,7 +12,8 @@ namespace ThaiBubbles_H6.Model
 
         public string Password { get; set; } = string.Empty;
 
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; } // Foreign key property
+        public Role? RoleType { get; set; }  // Navigation property
 
         public int UserUserId { get; set; }
     }

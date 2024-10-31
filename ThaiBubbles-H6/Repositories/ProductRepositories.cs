@@ -37,7 +37,7 @@
             {
                 product.ProductID = updateProduct.ProductID;
                 product.Name = updateProduct.Name;
-                product.price = updateProduct.price;
+                product.Price = updateProduct.Price;
                 product.Description = updateProduct.Description;
                 product.CategoryId = updateProduct.CategoryId;
 
