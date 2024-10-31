@@ -10,6 +10,8 @@ namespace ThaiBubbles_H6.Model
         public string CityName { get; set; } = string.Empty;
         public int ZIPCode { get; set; } = 0;
 
-
+        [JsonIgnore]
+        // Navigation property for Users
+        public List<User> Users { get; set; } = new List<User>();
     }
 }

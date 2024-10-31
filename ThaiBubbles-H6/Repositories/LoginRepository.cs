@@ -1,6 +1,6 @@
 ﻿namespace ThaiBubbles_H6.Repositories
 {
-    public class LoginRepository
+    public class LoginRepository : ILoginRepositories
     {
         private DatabaseContext _context { get; set; }
         public LoginRepository(DatabaseContext context)
