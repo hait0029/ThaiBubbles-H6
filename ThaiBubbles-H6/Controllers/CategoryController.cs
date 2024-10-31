@@ -19,7 +19,7 @@
         {
             try
             {
-                var category = await _categoryRepo.GetCategory();
+                var category = await _categoryRepo.GetAllCategory();
                 if (category == null) 
                 { 
                     return Problem("Nothing was returned from category service, this is unexpected");
