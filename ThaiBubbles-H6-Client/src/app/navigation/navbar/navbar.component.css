@@ -1,0 +1,44 @@
+/* Existing Styles */
+.nav-item {
+  padding-right: 10px;
+  font-weight: bold;
+}
+
+.navbar-brand {
+  font-style: italic;
+  font-weight: bold;
+}
+
+a:hover {
+  color: red;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a {
+  color: white;
+  font-size: 26px;
+  font-family: Georgia, 'palatino', 'book antiqua', 'palatino linotype', 'serif';
+  padding: 0 1rem;
+}
+
+/* New Styles to Center the Navbar Items */
+.navbar .container-fluid {
+  display: flex;
+  justify-content: center; /* Center all content within the container */
+  align-items: center;     /* Align items vertically centered */
+}
+
+.navbar-nav {
+  display: flex;
+  justify-content: center; /* Center the navigation links */
+  flex-grow: 1;            /* Ensure the nav links take up all available space */
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-brand {
+  margin-right: auto;      /* Push the brand to the left, if needed */
+}
