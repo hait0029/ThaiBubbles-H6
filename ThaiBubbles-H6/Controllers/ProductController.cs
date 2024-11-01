@@ -12,7 +12,7 @@
 
         [HttpGet]
 
-        public async Task<ActionResult> GetAllProducts()
+        public async Task<ActionResult> GetProducts()
         {
             try
             {
@@ -29,8 +29,7 @@
             }
         }
 
-        [HttpGet]
-
+        [HttpGet("{productId}")]
         public async Task<ActionResult> GetProductById(int productId)
         {
             try

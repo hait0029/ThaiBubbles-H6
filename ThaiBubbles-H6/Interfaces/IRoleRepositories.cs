@@ -1,6 +1,6 @@
 ﻿namespace ThaiBubbles_H6.Interfaces
 {
-    public interface IRoleRepository
+    public interface IRoleRepositories
     {
         public Task<List<Role>> GetAllRoles();
         public Task<Role> GetRoleById(int roleId);
