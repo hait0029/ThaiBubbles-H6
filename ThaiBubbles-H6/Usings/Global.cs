@@ -1,6 +1,7 @@
 ﻿global using System.ComponentModel.DataAnnotations;
 global using System.ComponentModel.DataAnnotations.Schema;
 global using ThaiBubbles_H6.Database;
+
 global using Microsoft.EntityFrameworkCore;
 global using ThaiBubbles_H6.Model;
 global using ThaiBubbles_H6.Repositories;
