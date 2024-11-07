@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace ThaiBubbles_H6.Controllers
+﻿namespace ThaiBubbles_H6.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

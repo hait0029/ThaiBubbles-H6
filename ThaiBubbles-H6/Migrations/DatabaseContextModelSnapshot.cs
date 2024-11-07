@@ -79,9 +79,6 @@ namespace ThaiBubbles_H6.Migrations
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserUserId")
-                        .HasColumnType("int");
-
                     b.HasKey("LoginID");
 
                     b.HasIndex("RoleId");

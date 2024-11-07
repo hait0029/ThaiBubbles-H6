@@ -12,7 +12,7 @@ using ThaiBubbles_H6.Database;
 namespace ThaiBubbles_H6.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241031125934_Initial")]
+    [Migration("20241105095850_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -80,9 +80,6 @@ namespace ThaiBubbles_H6.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserUserId")
                         .HasColumnType("int");
 
                     b.HasKey("LoginID");
