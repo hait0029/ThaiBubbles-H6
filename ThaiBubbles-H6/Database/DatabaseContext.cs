@@ -1,7 +1,6 @@
-﻿using ThaiBubbles_h6.Model;
-
-namespace ThaiBubbles_H6.Database
-{
+﻿
+    namespace ThaiBubbles_H6.Database
+    {
     public class DatabaseContext : DbContext
     {
         public DbSet<Login> Login { get; set; }
@@ -19,9 +18,20 @@ namespace ThaiBubbles_H6.Database
             //Database.EnsureCreated
             //Database.Migrate();
         }
-
+        // Seed initial data
         public static void SeedData(DatabaseContext context)
         {
+            // Seed Roles
+            if (!context.Role.Any())
+            {
+                context.Role.AddRange(
+                    new Role { RoleType = "Admin" },
+                    new Role { RoleType = "Customer" }
+                );
+                context.SaveChanges();
+            }
+
+
             // Seed Categories
             if (!context.Category.Any())
             {
@@ -37,7 +47,6 @@ namespace ThaiBubbles_H6.Database
             }
 
             // Seed other entities if needed
-            // Seed initial data
 
             if (!context.Product.Any())
             {
@@ -129,5 +138,8 @@ namespace ThaiBubbles_H6.Database
                 context.SaveChanges();
             }
         }
+
     }
 }
+
+
