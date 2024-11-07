@@ -166,9 +166,14 @@ namespace ThaiBubbles_H6.Migrations
                     b.Property<int>("PhoneNr")
                         .HasColumnType("int");
 
+                    b.Property<int?>("RoleID")
+                        .HasColumnType("int");
+
                     b.HasKey("UserID");
 
                     b.HasIndex("CityId");
+
+                    b.HasIndex("RoleID");
 
                     b.ToTable("User");
                 });
@@ -279,7 +284,13 @@ namespace ThaiBubbles_H6.Migrations
                         .WithMany("Users")
                         .HasForeignKey("CityId");
 
+                    b.HasOne("ThaiBubbles_H6.Model.Role", "Role")
+                        .WithMany("UserFk")
+                        .HasForeignKey("RoleID");
+
                     b.Navigation("Cities");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("ThaiBubbles_h6.Model.Order", b =>
@@ -303,6 +314,11 @@ namespace ThaiBubbles_H6.Migrations
             modelBuilder.Entity("ThaiBubbles_H6.Model.City", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ThaiBubbles_H6.Model.Role", b =>
+                {
+                    b.Navigation("UserFk");
                 });
 
             modelBuilder.Entity("ThaiBubbles_H6.Model.User", b =>

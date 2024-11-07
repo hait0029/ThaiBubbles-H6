@@ -39,6 +39,16 @@
                 // Hash Password
                 var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerLog.Password);
 
+
+                // Find or create the default "Customer" role
+                var role = await _context.Role.FirstOrDefaultAsync(r => r.RoleType == "Customer");
+                if (role == null)
+                {
+                    role = new Role { RoleType = "Customer" };
+                    _context.Role.Add(role);
+                    await _context.SaveChangesAsync();
+                }
+
                 // Create new user object
                 var newUser = new User
                 {
@@ -48,7 +58,8 @@
                     LName = registerLog.LName,
                     PhoneNr = registerLog.PhoneNr,
                     Address = registerLog.Address,
-                    CityId = registerLog.CityId // Set CityId from the request
+                    CityId = registerLog.CityId, // Set CityId from the request
+                    RoleID = role.RoleID // Assign the role ID here
                 };
 
                 // Add user to database

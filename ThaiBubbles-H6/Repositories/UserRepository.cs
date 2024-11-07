@@ -50,7 +50,8 @@ namespace ThaiBubbles_H6.Repositories
             new Claim("LastName", user.LName),      // Custom claim for last name
             new Claim("PhoneNr", user.PhoneNr.ToString()), // Phone number as a custom claim
             new Claim("Address", user.Address),      // Address as a custom claim
-            new Claim("City", user.CityId.ToString())
+            new Claim("City", user.CityId.ToString()),
+            new Claim(ClaimTypes.Role, user.Role.RoleType) // Add RoleType to claims
         };
 
 
@@ -112,12 +113,13 @@ namespace ThaiBubbles_H6.Repositories
 
         public async Task<List<User>> GetAllUsers()
         {
-            return await _context.User.Include(e => e.Cities).ToListAsync();
+            return await _context.User.Include(e => e.Cities).Include(e => e.Role).ToListAsync();
         }
 
         public async Task<User> GetUserById(int userId)
         {
-            return await _context.User.FirstOrDefaultAsync(e => e.UserID == userId);
+            return await _context.User.Include(u => u.Cities).FirstOrDefaultAsync(e => e.UserID == userId);
+
         }
 
         public async Task<User> UpdateUser(int userId, User updateUser)
