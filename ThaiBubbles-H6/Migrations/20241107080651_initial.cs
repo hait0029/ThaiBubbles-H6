@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ThaiBubbles_H6.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -116,24 +116,6 @@ namespace ThaiBubbles_H6.Migrations
                         column: x => x.CityId,
                         principalTable: "City",
                         principalColumn: "CityID");
-<<<<<<<< HEAD:ThaiBubbles-H6/Migrations/20241105095850_Initial.cs
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Login",
-                columns: table => new
-                {
-                    LoginID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Login", x => x.LoginID);
-========
->>>>>>>> 052b99f3135f8bb6fded721a81d5938ad79c3b7f:ThaiBubbles-H6/Migrations/20241105124517_Initial.cs
                     table.ForeignKey(
                         name: "FK_User_Role_RoleID",
                         column: x => x.RoleID,

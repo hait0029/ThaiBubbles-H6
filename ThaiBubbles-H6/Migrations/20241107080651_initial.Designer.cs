@@ -12,12 +12,8 @@ using ThaiBubbles_H6.Database;
 namespace ThaiBubbles_H6.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-<<<<<<<< HEAD:ThaiBubbles-H6/Migrations/20241105095850_Initial.Designer.cs
-    [Migration("20241105095850_Initial")]
-========
-    [Migration("20241105124517_Initial")]
->>>>>>>> 052b99f3135f8bb6fded721a81d5938ad79c3b7f:ThaiBubbles-H6/Migrations/20241105124517_Initial.Designer.cs
-    partial class Initial
+    [Migration("20241107080651_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
