@@ -12,7 +12,10 @@ namespace ThaiBubbles_H6.Repositories
 
         public async Task<User?> GetLoginByEmailAsync(string email)
         {
-            return await _context.User.FirstOrDefaultAsync(l => l.Email == email);
+            // Include the Role when fetching the user
+            return await _context.User
+                .Include(u => u.Role) // This ensures that Role is loaded
+                .FirstOrDefaultAsync(l => l.Email == email);
         }
 
         public async Task<string?> AuthenticateAsync(string email, string password)
@@ -44,7 +47,8 @@ namespace ThaiBubbles_H6.Repositories
         {
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
             var claims = new List<Claim>
-            {
+            { 
+            new Claim("userID", user.UserID.ToString()), // Include userID here
             new Claim(ClaimTypes.Name, user.Email), // User's email as the identity
             new Claim("FirstName", user.FName),     // Custom claim for first name
             new Claim("LastName", user.LName),      // Custom claim for last name
@@ -88,14 +92,8 @@ namespace ThaiBubbles_H6.Repositories
             return newLogin;
         }
 
-
-
-
-
-
-
-
-
+        
+        
         public UserRepository(DatabaseContext context, IConfiguration configuration)
         {
             _context = context;
@@ -118,7 +116,7 @@ namespace ThaiBubbles_H6.Repositories
 
         public async Task<User> GetUserById(int userId)
         {
-            return await _context.User.Include(u => u.Cities).FirstOrDefaultAsync(e => e.UserID == userId);
+            return await _context.User.Include(u => u.Cities).Include(e => e.Role).FirstOrDefaultAsync(e => e.UserID == userId);
 
         }
 
