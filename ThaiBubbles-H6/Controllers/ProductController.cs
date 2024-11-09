@@ -48,6 +48,14 @@
             }
         }
 
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchProducts([FromQuery] string searchTerm)
+        {
+            var products = await _productRepo.SearchProductsAsync(searchTerm);
+            return Ok(products);
+        }
+
         [HttpPut("{productId}")]
 
         public async Task<ActionResult> PutProduct(int productId, Product product)

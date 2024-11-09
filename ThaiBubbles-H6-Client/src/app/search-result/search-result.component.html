@@ -1,0 +1,13 @@
+<section *ngIf="products.length > 0; else noResults" class="product-grid">
+    <div class="product-card" *ngFor="let product of products">
+      <h2>{{ product.name }}</h2>
+      <h3>Price: {{ product.price | currency }}</h3>
+      
+      <p *ngIf="product.category">Category: {{ product.category.categoryName }}</p>
+    </div>
+  </section>
+  
+  <ng-template #noResults>
+    <p>No results found for "{{ searchTerm }}"</p>
+  </ng-template>
+  
