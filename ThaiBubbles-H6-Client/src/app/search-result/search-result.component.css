@@ -1,0 +1,54 @@
+/* Slideshow container for images or carousel */
+.slideshow-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;  /* Centering and adding margin */
+    padding: 10px;
+    text-align: center;
+  }
+  
+  /* Grid container for products */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  /* 3 products per row */
+    gap: 20px;  /* Spacing between products */
+    max-width: 1200px;  /* Optional max width */
+    margin: 20px auto;  /* Center and add space between slideshow and products */
+    padding: 10px;
+  }
+  
+  /* Individual product card styling */
+  .product-card {
+    border: 1px solid #ddd;  /* Light border */
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;  /* White background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+  }
+  
+  .product-card h2 {
+    margin: 10px 0;
+    font-size: 20px;
+    color: #333;
+  }
+  
+  .product-card h3 {
+    margin: 5px 0;
+    color: #777;
+  }
+  
+  /* Media queries for responsive design */
+  @media (max-width: 768px) {
+    /* On tablets, show 2 products per row */
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    /* On mobile, show 1 product per row */
+    .product-grid {
+      grid-template-columns: 1fr;
+    }
+  }

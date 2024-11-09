@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environments';
 import { Observable } from 'rxjs';
@@ -33,5 +33,10 @@ export class ProductService {
 
   delete(productId: number): Observable<Product> {
     return this.http.delete<Product>(`${this.apiUrl}/${productId}`);
+  }
+
+  searchProducts(searchTerm: string): Observable<Product[]>{
+    const params = new HttpParams().set('searchterm', searchTerm);
+    return this.http.get<Product[]>(`${this.apiUrl}/search`, { params });
   }
 }
