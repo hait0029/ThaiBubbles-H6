@@ -69,6 +69,15 @@
             return product;
         }
 
+
+        public async Task<List<Product>> SearchProductsAsync(string searchTerm)
+        {
+            return await _context.Product
+                .Include(p => p.category)  // Include category information
+                .Where(p => p.Name.Contains(searchTerm) || p.Description.Contains(searchTerm))
+                .ToListAsync();
+        }
+
     }
 
 }

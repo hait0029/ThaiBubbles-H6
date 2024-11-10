@@ -42,3 +42,44 @@ a {
 .navbar-brand {
   margin-right: auto;      /* Push the brand to the left, if needed */
 }
+
+.search-form {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-right: 8px;
+}
+
+button {
+  background-color: transparent; /* Green background */
+  border: none;
+  padding: 8px 16px;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button i {
+  font-size: 16px; /* Adjust icon size */
+}
+
+button svg {
+  width: 20px; /* Adjust the size of the SVG */
+  height: 20px;
+  fill: white; /* Change the color of the icon */
+}
+
+.nav-item a {
+  display: flex;
+  align-items: center;
+}
+
+.nav-item a svg {
+  margin-right: 8px; /* Add space between the icon and the text */
+  fill: #fff; /* Set icon color */
+}

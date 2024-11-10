@@ -7,5 +7,8 @@
         public Task<Product> CreateProduct(Product product);
         public Task<Product> UpdateProduct(Product product, int productId);
         public Task<Product> DeleteProduct(int productId);
+
+        // Add search method
+        public Task<List<Product>> SearchProductsAsync(string searchTerm);
     }
 }

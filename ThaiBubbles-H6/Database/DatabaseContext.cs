@@ -21,6 +21,21 @@
         // Seed initial data
         public static void SeedData(DatabaseContext context)
         {
+
+            if (!context.City.Any())
+            {
+                context.City.AddRange(
+                    new City { CityName = "Copenhagen S", ZIPCode =2300},
+                    new City { CityName = "Copenhagen N", ZIPCode = 2200},
+                    new City { CityName = "Copenhagen NV", ZIPCode = 2400 },
+                    new City { CityName = "Copenhagen SV", ZIPCode = 2450},
+                    new City { CityName = "Copenhagen Ø", ZIPCode = 2100 },
+                    new City { CityName = "Valby", ZIPCode = 2500 },
+                    new City { CityName = "Glostrup", ZIPCode = 2600 }
+                    );
+
+            }
+
             // Seed Roles
             if (!context.Role.Any())
             {

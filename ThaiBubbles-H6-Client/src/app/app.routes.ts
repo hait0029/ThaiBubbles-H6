@@ -8,6 +8,7 @@ import { AboutComponent } from './About/about/about.component';
 import { AdminDashboardComponent } from './Admin/admin-dashboard/admin-dashboard.component'; // Import your admin component
 import { adminGuard } from './Guards/admin.guard'; // Import the admin guard
 import { UserProfileComponent } from './Profile/user-profile/user-profile.component';
+import { SearchResultComponent } from './search-result/search-result.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -15,6 +16,7 @@ export const routes: Routes = [
     { path: 'about', component: AboutComponent },
     { path: 'category/:categoryID', component: ProductsComponent },
 
+    { path: 'search', component: SearchResultComponent },
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
 
