@@ -24,6 +24,8 @@
             return Ok(new { Token = token });
         }
 
+        
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] User registerLog)
         {

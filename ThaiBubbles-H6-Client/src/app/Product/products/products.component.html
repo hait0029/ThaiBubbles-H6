@@ -1,1 +1,15 @@
 <p>products works!</p>
+
+<!-- Category title -->
+<div class="Title">
+  <h1>{{ category.categoryName }}</h1>
+</div>
+
+<!-- Product grid container -->
+<section class="product-grid">
+  <div class="product-card" *ngFor="let product of category.product">
+    <h2>{{ product.name }}</h2>
+    <h3>Price: {{ product.price }}</h3>
+
+  </div>
+</section>
