@@ -18,6 +18,7 @@
         <a routerLink="/about" class="nav-link">About</a>
       </li>
 
+
       <form (submit)="onSearch()" class="search-form">
         <input type="text" [(ngModel)]="searchTerm" placeholder="Search products" name="search" class="search-input" />
         <button type="submit">
@@ -49,8 +50,8 @@
 
       <!-- Other navbar elements -->
 
-      
-      
+
+
 
       <li class="nav-item" *ngIf="isLoggedIn">
         <a (click)="logout()" class="nav-link">Logout</a>
@@ -59,7 +60,11 @@
       <!-- Show only if user is admin -->
       <li class="nav-item" *ngIf="isLoggedIn && isAdmin">
         <a routerLink="/admin" class="nav-link">Admin Dashboard</a>
+        <a routerLink="/admin/product-crud">product Crud</a>
+          <a routerLink="/admin/user-crud">user Crud</a>
       </li>
+
+
 
       <!-- Cart, always visible to logged in users -->
       <li class="nav-item">
