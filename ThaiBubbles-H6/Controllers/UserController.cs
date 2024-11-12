@@ -76,6 +76,7 @@
                 return StatusCode(500, $"An error occurred while creating the User: {ex.Message}");
             }
         }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] User registerLog)
         {
