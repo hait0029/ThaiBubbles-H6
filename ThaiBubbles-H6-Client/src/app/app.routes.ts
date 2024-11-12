@@ -10,6 +10,7 @@ import { adminGuard } from './Guards/admin.guard'; // Import the admin guard
 import { UserProfileComponent } from './Profile/user-profile/user-profile.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { UserCrudComponent } from './Admin/user-crud/user-crud.component';
+import { ProductCrudComponent } from './Admin/product-crud/product-crud.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -23,7 +24,8 @@ export const routes: Routes = [
 
     // Admin Routes (Protected by adminGuard)
     { path: 'admin', component: AdminDashboardComponent, canActivate: [adminGuard] },
-    {path: 'admin/user-crud', component: UserCrudComponent},
+    {path: 'admin/user-crud', component: UserCrudComponent, canActivate: [adminGuard]},
+    {path: 'admin/product-crud', component: ProductCrudComponent, canActivate: [adminGuard]},
 
     // Profile Route (accessible only to logged-in users)
     { path: 'profile', component: UserProfileComponent },
