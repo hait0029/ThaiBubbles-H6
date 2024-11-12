@@ -29,7 +29,7 @@ export class AuthService {
   get currentUserValue(): any {
     return this.currentUserSubject.value;
   }
-  
+
   // Public method to access the current user's role
   getCurrentUserRole(): string | null {
     const user = this.currentUserSubject.value;
@@ -70,7 +70,7 @@ export class AuthService {
     if (this.token) {
       const decoded: any = jwtDecode(this.token);
       console.log('Decoded Token:', decoded); // Add this to see the decoded content
-  
+
       // Ensure that decoded contains userID and other fields
       if (decoded && decoded.userID) {
         this.currentUserSubject.next(decoded);
@@ -79,8 +79,8 @@ export class AuthService {
       }
     }
   }
-  
-  
+
+
 
   // Get user role from decoded token
   getUserRole(): string {
@@ -101,7 +101,7 @@ export class AuthService {
 
   // Check if the current user is an admin
   isAdmin(): boolean {
-    return this.getUserRole() === 'admin';
+    return this.getUserRole() === 'Admin';
   }
 
   // Initialize service by retrieving token from local storage and decoding it
@@ -116,5 +116,5 @@ export class AuthService {
       console.log('No token found in localStorage. User is not logged in.');
     }
   }
-  
+
 }
