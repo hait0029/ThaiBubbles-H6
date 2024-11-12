@@ -24,8 +24,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   searchTerm: string = '';  // Define searchTerm here
   searchResults: Product[] = [];  // Define searchResults here to store the products from search
   basket: cartItems[] = [];
-  isLoggedIn: boolean = false;
-  isAdmin: boolean = false;
+  public isLoggedIn: boolean = false;
+ public  isAdmin: boolean = false;
   private authSubscription: Subscription| null = null; // To manage the subscription
 
   constructor(private cartService: CartService, private router: Router, private authService: AuthService, private productService: ProductService) { }

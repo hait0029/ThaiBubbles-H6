@@ -24,7 +24,58 @@
             return Ok(new { Token = token });
         }
 
-        
+        [HttpPost("registerAdmin")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] User registerLog)
+        {
+            try
+            {
+                // Check if email already exists
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == registerLog.Email);
+                if (existingUser != null)
+                {
+                    return BadRequest("User already exists");
+                }
+
+                // Hash Password
+                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerLog.Password);
+
+
+                // Find or create the default "Admin" role
+                var role = await _context.Role.FirstOrDefaultAsync(r => r.RoleType == "Admin");
+                if (role == null)
+                {
+                    role = new Role { RoleType = "Admin" };
+                    _context.Role.Add(role);
+                    await _context.SaveChangesAsync();
+                }
+
+                // Create new user object
+                var newUser = new User
+                {
+                    Email = registerLog.Email,
+                    Password = hashedPassword,
+                    FName = registerLog.FName,
+                    LName = registerLog.LName,
+                    PhoneNr = registerLog.PhoneNr,
+                    Address = registerLog.Address,
+                    CityId = registerLog.CityId, // Set CityId from the request
+                    RoleID = role.RoleID // Assign the role ID here
+                };
+
+                // Add user to database
+                _context.User.Add(newUser);
+                await _context.SaveChangesAsync();
+
+                // Optionally load the City data for response
+                await _context.Entry(newUser).Reference(u => u.Cities).LoadAsync();
+
+                return CreatedAtAction("Register", new { userId = newUser.UserID }, newUser);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while creating the User: {ex.Message}");
+            }
+        }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] User registerLog)
