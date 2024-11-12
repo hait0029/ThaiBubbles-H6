@@ -79,7 +79,12 @@
             }
         }
 
-
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchUsers([FromQuery] string searchTerm)
+        {
+            var users = await _userRepo.SearchUsersAsync(searchTerm);
+            return Ok(users);
+        }
 
 
 

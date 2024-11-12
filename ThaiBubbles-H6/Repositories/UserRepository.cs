@@ -150,5 +150,13 @@ namespace ThaiBubbles_H6.Repositories
             }
             return user;
         }
+
+        public async Task<List<User>> SearchUsersAsync(string searchTerm)
+        {
+            return await _context.User
+                .Include(p => p.Cities)  // Include User information
+                .Where(p => p.FName.Contains(searchTerm) || p.LName.Contains(searchTerm))
+                .ToListAsync();
+        }
     }
 }

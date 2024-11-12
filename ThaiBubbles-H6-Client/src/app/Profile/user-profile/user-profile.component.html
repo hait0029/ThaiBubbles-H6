@@ -9,9 +9,6 @@
   <p><strong>Email:</strong> {{ userProfile.email }}</p>
   <p><strong>Phone:</strong> {{ userProfile.phoneNr }}</p>
   <p><strong>Address:</strong> {{ userProfile.address }}</p>
-  <p><strong>City ID:</strong> {{ userProfile.cityId }}</p>
+  <p><strong>City:</strong> {{ cityName || 'City not found' }}</p>
   <p><strong>Role:</strong> {{ userProfile?.role?.roleType }}</p>
-
-  
-
 </div>

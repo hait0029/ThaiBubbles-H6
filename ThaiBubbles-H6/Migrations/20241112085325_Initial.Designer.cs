@@ -12,7 +12,7 @@ using ThaiBubbles_H6.Database;
 namespace ThaiBubbles_H6.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241111072821_Initial")]
+    [Migration("20241112085325_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
