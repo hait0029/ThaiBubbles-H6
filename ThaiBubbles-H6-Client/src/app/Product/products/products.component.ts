@@ -23,7 +23,7 @@ export class ProductsComponent {
     categoryID: 0, categoryName: '', product: []
   }
   product: Product = {
-    productID: 0, name: '', price: 0, categoryId: 0,
+    productID: 0, name: '', price: 0, categoryId: 0, description:'',
     category: {
       categoryID: 0, categoryName: "",
     },

@@ -15,7 +15,8 @@ import { CommonModule } from '@angular/common';
 export class UserCrudComponent {
 
   userArray: User[] = [];
-  user: User = { userID: 0, email: '', password: '', fName: '', lName: '', phoneNr: 0, address: '', cityId: 0 };
+  user: User = { userID: 0, email: '', password: '', fName: '', lName: '', phoneNr: 0, address: '', cityId: 0, roleID:0
+   };
   userCopy: User = { ...this.user }; // Temporary object for form data
 
   constructor(private userService: UserService) {}
@@ -43,7 +44,7 @@ export class UserCrudComponent {
 
   save(): void {
     if (this.userCopy.userID === 0) {
-      this.userService.create(this.userCopy).subscribe({
+      this.userService.createcrud(this.userCopy).subscribe({
         next: (newUser) => {
           this.userArray.push(newUser);
           this.resetForm();
@@ -69,7 +70,7 @@ export class UserCrudComponent {
   }
 
   resetForm(): void {
-    this.user = { userID: 0, email: '', password: '', fName: '', lName: '', phoneNr: 0, address: '', cityId: 0 };
+    this.user = { userID: 0, email: '', password: '', fName: '', lName: '', phoneNr: 0, address: '', cityId: 0, roleID:0 };
     this.userCopy = { ...this.user };
   }
 }
