@@ -122,24 +122,42 @@ namespace ThaiBubbles_H6.Repositories
 
         public async Task<User> UpdateUser(int userId, User updateUser)
         {
+            // Retrieve the current user record from the database
             User user = await GetUserById(userId);
+
             if (user != null && updateUser != null)
             {
+                user.Email = updateUser.Email;
                 user.UserID = updateUser.UserID;
                 user.FName = updateUser.FName;
                 user.LName = updateUser.LName;
                 user.PhoneNr = updateUser.PhoneNr;
                 user.Address = updateUser.Address;
 
+                // Check if the password has changed
+                if (updateUser.Password != user.Password)
+                {
+                    // Hash the new password before saving
+                    var hashedPassword = BCrypt.Net.BCrypt.HashPassword(updateUser.Password);
+                    user.Password = hashedPassword;
+
+                    Console.WriteLine($"Password updated and hashed: {hashedPassword}"); // Debug log for password hash
+                }
+                else
+                {
+                    Console.WriteLine("Password not changed; skipping rehashing.");
+                }
             }
 
-
-
+            // Mark the user entity as modified
             _context.Entry(user).State = EntityState.Modified;
 
+            // Save changes to the database
             await _context.SaveChangesAsync();
-            return await GetUserById(userId);
+            Console.WriteLine("User updated successfully.");
+            return await GetUserById(userId); // Return the updated user
         }
+
         public async Task<User> DeleteUser(int userId)
         {
             User user = await GetUserById(userId);
