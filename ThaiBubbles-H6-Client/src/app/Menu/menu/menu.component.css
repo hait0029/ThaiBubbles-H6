@@ -1,0 +1,52 @@
+.menu-container {
+  padding: 10px;
+
+}
+
+.menu-brand {
+  font-style: italic;
+  font-weight: bold;
+  color: #fff;
+  font-family: 'Brush Script MT', cursive;
+  font-size: 20px;
+  background-color: #343a40; /* Dark background color */
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Creates 3 columns */
+  margin-top: 20px; /* Adds some space between the navbar and the categories */
+  font-family: 'Brush Script MT', cursive;
+  font-size: 30px;
+}
+
+.category-item {
+  background-color: transparent;
+  padding: 15px;
+  text-align: center;
+
+  border-radius: 5px;
+}
+
+.nav-link {
+  color: #000; /* Adjust the color as needed */
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* Base style for the image */
+.shrink-on-hover {
+
+  transition: transform 0.3s ease; /* Smooth transition for scaling */
+}
+
+/* Style applied when hovering over the image */
+.shrink-on-hover:hover {
+  transform: scale(0.9);   /* Shrink the image to 90% of its original size */
+
+  filter: hue-rotate(90deg) saturate(2) brightness(0.8); }

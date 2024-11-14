@@ -1,7 +1,6 @@
-﻿using ThaiBubbles_h6.Model;
-
-namespace ThaiBubbles_H6.Database
-{
+﻿
+    namespace ThaiBubbles_H6.Database
+    {
     public class DatabaseContext : DbContext
     {
         public DbSet<Login> Login { get; set; }
@@ -19,9 +18,43 @@ namespace ThaiBubbles_H6.Database
             //Database.EnsureCreated
             //Database.Migrate();
         }
-
+        // Seed initial data
         public static void SeedData(DatabaseContext context)
         {
+           
+
+            //if (!context.User.Any())
+            //{
+            //    context.User.AddRange(
+            //        new User { Email = "admin@admin.com", Password = "password", FName = "Admin", LName = "admins", PhoneNr = 4234242, Address = "yeetvej", RoleID = 1 });
+            //}
+
+
+            if (!context.City.Any())
+            {
+                context.City.AddRange(
+                    new City { CityName = "Copenhagen S", ZIPCode =2300},
+                    new City { CityName = "Copenhagen N", ZIPCode = 2200},
+                    new City { CityName = "Copenhagen NV", ZIPCode = 2400 },
+                    new City { CityName = "Copenhagen SV", ZIPCode = 2450},
+                    new City { CityName = "Copenhagen Ø", ZIPCode = 2100 },
+                    new City { CityName = "Valby", ZIPCode = 2500 },
+                    new City { CityName = "Glostrup", ZIPCode = 2600 }
+                    );
+
+            }
+
+            // Seed Roles
+            if (!context.Role.Any())
+            {
+                context.Role.AddRange(
+                    new Role { RoleType = "Admin" },
+                    new Role { RoleType = "Customer" }
+                );
+                context.SaveChanges();
+            }
+
+
             // Seed Categories
             if (!context.Category.Any())
             {
@@ -37,7 +70,6 @@ namespace ThaiBubbles_H6.Database
             }
 
             // Seed other entities if needed
-            // Seed initial data
 
             if (!context.Product.Any())
             {
@@ -129,5 +161,8 @@ namespace ThaiBubbles_H6.Database
                 context.SaveChanges();
             }
         }
+
     }
 }
+
+

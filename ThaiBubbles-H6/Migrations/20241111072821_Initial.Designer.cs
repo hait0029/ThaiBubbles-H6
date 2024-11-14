@@ -12,7 +12,7 @@ using ThaiBubbles_H6.Database;
 namespace ThaiBubbles_H6.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241031125934_Initial")]
+    [Migration("20241111072821_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -80,9 +80,6 @@ namespace ThaiBubbles_H6.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserUserId")
                         .HasColumnType("int");
 
                     b.HasKey("LoginID");
@@ -172,9 +169,14 @@ namespace ThaiBubbles_H6.Migrations
                     b.Property<int>("PhoneNr")
                         .HasColumnType("int");
 
+                    b.Property<int?>("RoleID")
+                        .HasColumnType("int");
+
                     b.HasKey("UserID");
 
                     b.HasIndex("CityId");
+
+                    b.HasIndex("RoleID");
 
                     b.ToTable("User");
                 });
@@ -285,7 +287,13 @@ namespace ThaiBubbles_H6.Migrations
                         .WithMany("Users")
                         .HasForeignKey("CityId");
 
+                    b.HasOne("ThaiBubbles_H6.Model.Role", "Role")
+                        .WithMany("UserFk")
+                        .HasForeignKey("RoleID");
+
                     b.Navigation("Cities");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("ThaiBubbles_h6.Model.Order", b =>
@@ -309,6 +317,11 @@ namespace ThaiBubbles_H6.Migrations
             modelBuilder.Entity("ThaiBubbles_H6.Model.City", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ThaiBubbles_H6.Model.Role", b =>
+                {
+                    b.Navigation("UserFk");
                 });
 
             modelBuilder.Entity("ThaiBubbles_H6.Model.User", b =>

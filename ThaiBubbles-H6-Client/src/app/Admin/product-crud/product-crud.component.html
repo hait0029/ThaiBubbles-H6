@@ -1,0 +1,93 @@
+<div class="product-crud-container">
+  <h2>Product CRUD</h2>
+
+  <!-- Form for adding/editing product -->
+  <form (ngSubmit)="save()" #productForm="ngForm">
+    <div class="form-group">
+      <label for="name">Product Name:</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        [(ngModel)]="productCopy.name"
+        required
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea
+        id="description"
+        name="description"
+        [(ngModel)]="productCopy.description"
+        required
+        class="form-control"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price:</label>
+      <input
+        type="number"
+        id="price"
+        name="price"
+        [(ngModel)]="productCopy.price"
+        required
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="categoryId">Category ID:</label>
+      <input
+        type="number"
+        id="categoryId"
+        name="categoryId"
+        [(ngModel)]="productCopy.categoryId"
+        required
+        class="form-control"
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!productForm.form.valid">
+      {{ productCopy.productID === 0 ? 'Add Product' : 'Save Changes' }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancel</button>
+  </form>
+
+  <hr />
+
+  <!-- Product List -->
+  <div *ngIf="products.length > 0">
+    <h3>Product List</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Category ID</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.productID }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.categoryId }}</td>
+          <td>
+            <button class="btn btn-info" (click)="edit(product)">Edit</button>
+            <button class="btn btn-danger" (click)="delete(product)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="products.length === 0">
+    <p>No products available.</p>
+  </div>
+</div>

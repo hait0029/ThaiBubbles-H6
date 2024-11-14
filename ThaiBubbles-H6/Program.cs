@@ -4,6 +4,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
+
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddScoped<ICityRepositories, CityRepositories>();
@@ -19,6 +20,8 @@ builder.Services.AddScoped<IFavoriteRepositories, FavoriteRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+
 
 // Configure CORS policy
 builder.Services.AddCors(options =>

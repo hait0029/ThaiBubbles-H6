@@ -1,0 +1,85 @@
+/* Existing Styles */
+.nav-item {
+  padding-right: 10px;
+  font-weight: bold;
+}
+
+.navbar-brand {
+  font-style: italic;
+  font-weight: bold;
+}
+
+a:hover {
+  color: red;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a {
+  color: white;
+  font-size: 26px;
+  font-family: Georgia, 'palatino', 'book antiqua', 'palatino linotype', 'serif';
+  padding: 0 1rem;
+}
+
+/* New Styles to Center the Navbar Items */
+.navbar .container-fluid {
+  display: flex;
+  justify-content: center; /* Center all content within the container */
+  align-items: center;     /* Align items vertically centered */
+}
+
+.navbar-nav {
+  display: flex;
+  justify-content: center; /* Center the navigation links */
+  flex-grow: 1;            /* Ensure the nav links take up all available space */
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-brand {
+  margin-right: auto;      /* Push the brand to the left, if needed */
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-right: 8px;
+}
+
+button {
+  background-color: transparent; /* Green background */
+  border: none;
+  padding: 8px 16px;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button i {
+  font-size: 16px; /* Adjust icon size */
+}
+
+button svg {
+  width: 20px; /* Adjust the size of the SVG */
+  height: 20px;
+  fill: white; /* Change the color of the icon */
+}
+
+.nav-item a {
+  display: flex;
+  align-items: center;
+}
+
+.nav-item a svg {
+  margin-right: 8px; /* Add space between the icon and the text */
+  fill: #fff; /* Set icon color */
+}

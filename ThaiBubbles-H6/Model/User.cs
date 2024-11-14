@@ -14,8 +14,18 @@ namespace ThaiBubbles_H6.Model
         public string Address { get; set; } = string.Empty;
         public int? FavoriteId { get; set; }
         public int? CityId { get; set; }
+        [JsonIgnore]
         public City? Cities { get; set; }
+        [JsonIgnore]
         public List<Favorite?> FavoriteFk { get; set; } = new List<Favorite?>(); // en til mange relation mellem User til Favorite
+
+        // Foreign key for Role
+        
+        public int? RoleID { get; set; }
+
+        // Navigation property for the Role
+        
+        public Role? Role { get; set; }
 
         [JsonIgnore]
         public List<Order?> Order { get; set; } = new List<Order?>(); // en til mange relation mellem User til Order

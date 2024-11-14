@@ -1,0 +1,79 @@
+<div class="user-crud-container">
+  <h2>User Management</h2>
+
+  <!-- User Form for Creating or Editing -->
+  <form (ngSubmit)="save()" #userForm="ngForm">
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" [(ngModel)]="userCopy.email" name="email" required />
+    </div>
+
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" [(ngModel)]="userCopy.password" name="password" required />
+    </div>
+
+    <div>
+      <label for="fName">First Name:</label>
+      <input type="text" id="fName" [(ngModel)]="userCopy.fName" name="fName" required />
+    </div>
+
+    <div>
+      <label for="lName">Last Name:</label>
+      <input type="text" id="lName" [(ngModel)]="userCopy.lName" name="lName" required />
+    </div>
+
+    <div>
+      <label for="phoneNr">Phone Number:</label>
+      <input type="number" id="phoneNr" [(ngModel)]="userCopy.phoneNr" name="phoneNr" />
+    </div>
+
+    <div>
+      <label for="address">Address:</label>
+      <input type="text" id="address" [(ngModel)]="userCopy.address" name="address" />
+    </div>
+
+    <div>
+      <label for="Role">Role ID:</label>
+      <input type="number" id="roleID" [(ngModel)]="userCopy.roleID" name="roleID" />
+    </div>
+
+    <div>
+      <label for="cityId">City ID:</label>
+      <input type="number" id="cityId" [(ngModel)]="userCopy.cityId" name="cityId" />
+    </div>
+
+    <button type="submit" [disabled]="!userForm.form.valid">
+      {{ userCopy.userID === 0 ? 'Create User' : 'Save Changes' }}
+    </button>
+  </form>
+
+  <!-- User List Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Phone Number</th>
+        <th>Address</th>
+        <th>City ID</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of userArray">
+        <td>{{ user.email }}</td>
+        <td>{{ user.fName }}</td>
+        <td>{{ user.lName }}</td>
+        <td>{{ user.phoneNr }}</td>
+        <td>{{ user.address }}</td>
+        <td>{{ user.cityId }}</td>
+        <td>
+          <button (click)="edit(user)">Edit</button>
+          <button (click)="delete(user)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,18 @@
+<div class="menu-container">
+  <nav class="menu navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid justify-content-center">
+      <b class="menu-brand" routerLink="menu">{{ title }}</b>
+    </div>
+  </nav>
+  <div class="categories-grid">
+    <div *ngFor="let category of Categories" class="category-item">
+      <a routerLink="/category/{{category.categoryID}}">
+       <img src="assets/bubbleteaicon.png" class="shrink-on-hover">
+      </a>
+      <a class="nav-link" routerLink="/category/{{category.categoryID}}">
+        {{category.categoryName}}
+      </a>
+    </div>
+  </div>
+</div>
+
