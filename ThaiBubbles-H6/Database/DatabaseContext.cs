@@ -23,6 +23,13 @@
         {
            
 
+            //if (!context.User.Any())
+            //{
+            //    context.User.AddRange(
+            //        new User { Email = "admin@admin.com", Password = "password", FName = "Admin", LName = "admins", PhoneNr = 4234242, Address = "yeetvej", RoleID = 1 });
+            //}
+
+
             if (!context.City.Any())
             {
                 context.City.AddRange(

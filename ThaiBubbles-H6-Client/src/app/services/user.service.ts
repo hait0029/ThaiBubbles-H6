@@ -21,6 +21,12 @@ export class UserService {
     return this.http.post<User>(this.apiUrl, user);
   }
 
+  createcrud(user: User): Observable<User> {
+    // Define a temporary URL specific to registerCrud
+    const apiUrl = `${environment.apiurl}User/registerCrud`;
+    return this.http.post<User>(apiUrl, user);
+  }
+
   update(user: User): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/${user.userID}`, user);
   }

@@ -76,6 +76,50 @@
                 return StatusCode(500, $"An error occurred while creating the User: {ex.Message}");
             }
         }
+
+        [HttpPost("registerCrud")]
+        public async Task<IActionResult> RegisterCrud([FromBody] User registerLog)
+        {
+            try
+            {
+                // Check if email already exists
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == registerLog.Email);
+                if (existingUser != null)
+                {
+                    return BadRequest("User already exists");
+                }
+
+                // Hash Password
+                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerLog.Password);
+
+                // Create new user object
+                var newUser = new User
+                {
+                    Email = registerLog.Email,
+                    Password = hashedPassword,
+                    FName = registerLog.FName,
+                    LName = registerLog.LName,
+                    PhoneNr = registerLog.PhoneNr,
+                    Address = registerLog.Address,
+                    CityId = registerLog.CityId, // Set CityId from the request
+                    RoleID = registerLog.RoleID // Assign the role ID here
+                };
+
+                // Add user to database
+                _context.User.Add(newUser);
+                await _context.SaveChangesAsync();
+
+                // Optionally load the City data for response
+                await _context.Entry(newUser).Reference(u => u.Cities).LoadAsync();
+
+                return CreatedAtAction("Register", new { userId = newUser.UserID }, newUser);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while creating the User: {ex.Message}");
+            }
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] User registerLog)
         {
