@@ -11,13 +11,14 @@ import { UserProfileComponent } from './Profile/user-profile/user-profile.compon
 import { SearchResultComponent } from './search-result/search-result.component';
 import { UserCrudComponent } from './Admin/user-crud/user-crud.component';
 import { ProductCrudComponent } from './Admin/product-crud/product-crud.component';
+import { CartComponent } from './cart/cart.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'menu', component: MenuComponent },
     { path: 'about', component: AboutComponent },
     { path: 'category/:categoryID', component: ProductsComponent },
-
+    {path: 'cart', component: CartComponent},
     { path: 'search', component: SearchResultComponent },
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
