@@ -23,9 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Repositories\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ThaiBubbles-H6\ThaiBubbles-H6.csproj" />
   </ItemGroup>
 
 </Project>
