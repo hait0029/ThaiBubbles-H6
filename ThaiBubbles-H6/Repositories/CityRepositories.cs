@@ -31,8 +31,9 @@ namespace ThaiBubbles_H6.Repositories
             City city = await GetCityById(cityId);
             if (city != null && UpdateCity != null)
             {
-                city.CityName = updatecity.CityName;
                 city.CityID = updatecity.CityID;
+                city.CityName = updatecity.CityName;
+                city.ZIPCode = updatecity.ZIPCode;
 
                 await _context.SaveChangesAsync();
             }

@@ -7,6 +7,7 @@ import { UserService } from '../../services/user.service';  // Import UserServic
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CityService } from '../../services/city.service';
+import { EncryptionService } from '../../services/encryption.service';  // Import EncryptionService
 
 @Component({
   selector: 'app-user-profile',
@@ -26,7 +27,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private userService: UserService,
-    private cityService: CityService  // Inject CityService
+    private cityService: CityService,  // Inject CityService
+    private encryptionService: EncryptionService  // Inject EncryptionService
   ) {}
 
   ngOnInit(): void {
@@ -43,12 +45,22 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         if (currentUser && currentUser.userID) {
           this.userService.getById(currentUser.userID).subscribe({
             next: (userProfileData) => {
-              this.userProfile = userProfileData;
-              this.isLoading = false;
+              // Decrypt sensitive data using EncryptionService
+              if (userProfileData) {
+                this.userProfile = {
+                  ...userProfileData,
+                  email: this.encryptionService.decrypt(userProfileData.email),
+                  fName: this.encryptionService.decrypt(userProfileData.fName),
+                  lName: this.encryptionService.decrypt(userProfileData.lName),
+                  phoneNr: this.encryptionService.decrypt(userProfileData.phoneNr),
+                  address: this.encryptionService.decrypt(userProfileData.address)
+                };
+                this.isLoading = false;
 
-              // Fetch city name if cityId exists
-              if (this.userProfile.cityId) {
-                this.loadCityName(this.userProfile.cityId);
+                // Fetch city name if cityId exists
+                if (this.userProfile.cityId) {
+                  this.loadCityName(this.userProfile.cityId);
+                }
               }
             },
             error: () => {

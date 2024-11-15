@@ -1,4 +1,6 @@
-﻿namespace ThaiBubbles_H6.Controllers
+﻿using ThaiBubbles_H6.Helper;
+
+namespace ThaiBubbles_H6.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -82,34 +84,36 @@
         {
             try
             {
-                // Check if email already exists
-                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == registerLog.Email);
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == EncryptionHelper.Encrypt(registerLog.Email));
                 if (existingUser != null)
                 {
                     return BadRequest("User already exists");
                 }
 
-                // Hash Password
                 var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerLog.Password);
 
-                // Create new user object
+                var role = await _context.Role.FirstOrDefaultAsync(r => r.RoleType == "Customer") ?? new Role { RoleType = "Customer" };
+                if (role.RoleID == 0)
+                {
+                    _context.Role.Add(role);
+                    await _context.SaveChangesAsync();
+                }
+
                 var newUser = new User
                 {
-                    Email = registerLog.Email,
+                    Email = EncryptionHelper.Encrypt(registerLog.Email),
                     Password = hashedPassword,
-                    FName = registerLog.FName,
-                    LName = registerLog.LName,
-                    PhoneNr = registerLog.PhoneNr,
-                    Address = registerLog.Address,
-                    CityId = registerLog.CityId, // Set CityId from the request
-                    RoleID = registerLog.RoleID // Assign the role ID here
+                    FName = EncryptionHelper.Encrypt(registerLog.FName),
+                    LName = EncryptionHelper.Encrypt(registerLog.LName),
+                    PhoneNr = EncryptionHelper.Encrypt(registerLog.PhoneNr),
+                    Address = EncryptionHelper.Encrypt(registerLog.Address),
+                    CityId = registerLog.CityId,
+                    RoleID = role.RoleID
                 };
 
-                // Add user to database
                 _context.User.Add(newUser);
                 await _context.SaveChangesAsync();
 
-                // Optionally load the City data for response
                 await _context.Entry(newUser).Reference(u => u.Cities).LoadAsync();
 
                 return CreatedAtAction("Register", new { userId = newUser.UserID }, newUser);
@@ -125,8 +129,9 @@
         {
             try
             {
-                // Check if email already exists
-                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == registerLog.Email);
+                // Encrypt the email before checking if it exists
+                var encryptedEmail = EncryptionHelper.Encrypt(registerLog.Email);
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == encryptedEmail);
                 if (existingUser != null)
                 {
                     return BadRequest("User already exists");
@@ -134,7 +139,6 @@
 
                 // Hash Password
                 var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerLog.Password);
-
 
                 // Find or create the default "Customer" role
                 var role = await _context.Role.FirstOrDefaultAsync(r => r.RoleType == "Customer");
@@ -145,20 +149,19 @@
                     await _context.SaveChangesAsync();
                 }
 
-                // Create new user object
+                // Encrypt all user data (if not encrypted already)
                 var newUser = new User
                 {
-                    Email = registerLog.Email,
+                    Email = encryptedEmail, // already encrypted
                     Password = hashedPassword,
-                    FName = registerLog.FName,
-                    LName = registerLog.LName,
-                    PhoneNr = registerLog.PhoneNr,
-                    Address = registerLog.Address,
-                    CityId = registerLog.CityId, // Set CityId from the request
-                    RoleID = role.RoleID // Assign the role ID here
+                    FName = EncryptionHelper.Encrypt(registerLog.FName),
+                    LName = EncryptionHelper.Encrypt(registerLog.LName),
+                    PhoneNr = EncryptionHelper.Encrypt(registerLog.PhoneNr),
+                    Address = EncryptionHelper.Encrypt(registerLog.Address),
+                    CityId = registerLog.CityId,
+                    RoleID = role.RoleID
                 };
 
-                // Add user to database
                 _context.User.Add(newUser);
                 await _context.SaveChangesAsync();
 
@@ -172,6 +175,8 @@
                 return StatusCode(500, $"An error occurred while creating the User: {ex.Message}");
             }
         }
+
+
 
         [HttpGet("search")]
         public async Task<IActionResult> SearchUsers([FromQuery] string searchTerm)
@@ -207,19 +212,31 @@
         {
             try
             {
-                var users = await _userRepo.GetUserById(userId);
-                if (users == null)
+                var user = await _userRepo.GetUserById(userId);
+
+                if (user == null)
                 {
                     return NotFound($"User with userid {userId} was not found");
                 }
-                return Ok(users);
-            }
 
+                // Ensure to decrypt the fields before sending them back in the response
+                user.Email = EncryptionHelper.Decrypt(user.Email);
+                user.FName = EncryptionHelper.Decrypt(user.FName);
+                user.LName = EncryptionHelper.Decrypt(user.LName);
+                user.PhoneNr = EncryptionHelper.Decrypt(user.PhoneNr);
+                user.Address = EncryptionHelper.Decrypt(user.Address);
+
+                // Return the user data after decryption
+                return Ok(user);
+            }
             catch (Exception ex)
             {
                 return Problem(ex.Message);
             }
         }
+
+
+
 
         [HttpPut("{userId}")]
         public async Task<ActionResult> PutUser(int userId, User user)
@@ -242,23 +259,7 @@
 
         }
 
-        [HttpPost]
-        public async Task<ActionResult> PostUser(User user)
-        {
-            try
-            {
-                var createUser = await _userRepo.CreateUser(user);
-                if (createUser == null)
-                {
-                    return StatusCode(500, "User was not created. Something failed...");
-                }
-                return CreatedAtAction("PostUser", new { userId = createUser.UserID }, createUser);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occured while creating the User {ex.Message}");
-            }
-        }
+        
 
         [HttpDelete("{userId}")]
 

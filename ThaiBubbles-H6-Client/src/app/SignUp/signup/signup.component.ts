@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { environment } from '../../../environments/environments';
 import { City } from '../../Models/City';
+import { EncryptionService } from '../../services/encryption.service'; // Import EncryptionService
 
 @Component({
   selector: 'app-signup',
@@ -18,7 +19,7 @@ export class SignupComponent implements OnInit {
   password: string = '';
   fName: string = '';
   lName: string = '';
-  phoneNr: number = 0;
+  phoneNr: string = '';
   address: string = '';
   cityId: number = 0;  // The ID of the selected city
   cityName: string = ''; // The name of the selected city
@@ -29,7 +30,11 @@ export class SignupComponent implements OnInit {
     zipCode: 0
   };
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(
+    private http: HttpClient, 
+    private router: Router,
+    private encryptionService: EncryptionService  // Inject EncryptionService
+  ) { }
 
   ngOnInit() {
     // Fetch the list of cities from the backend
@@ -40,23 +45,28 @@ export class SignupComponent implements OnInit {
   }
 
   register() {
-    // Construct the user object to be sent to the server
-    const user = {
-      email: this.email,
-      password: this.password,
-      fName: this.fName,
-      lName: this.lName,
-      phoneNr: this.phoneNr,
-      address: this.address,
-      cityId: this.cityId,  // Use the city ID when sending data
+    // Encrypt sensitive fields using EncryptionService
+    const encryptedUser = {
+      email: this.encryptionService.encrypt(this.email),  // Encrypt email
+      password: this.password,  // Password should be handled by backend (hashed)
+      fName: this.encryptionService.encrypt(this.fName),  // Encrypt first name
+      lName: this.encryptionService.encrypt(this.lName),  // Encrypt last name
+      phoneNr: this.encryptionService.encrypt(this.phoneNr),  // Encrypt phone number
+      address: this.encryptionService.encrypt(this.address),  // Encrypt address
+      cityId: this.cityId,  // Use the city ID without encryption (foreign key)
       cityName: this.cityName,  // Include the city name for display or further use
       roleType: 'Customer'  // Default role
     };
 
     // Make the HTTP POST request to register the user
-    this.http.post(`${environment.apiurl}user/register`, user)
-      .subscribe(() => {
-        this.router.navigate(['/login']);  // Redirect to login page after registration
+    this.http.post(`${environment.apiurl}user/register`, encryptedUser)
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/login']);  // Redirect to login page after registration
+        },
+        error: (err) => {
+          console.error('Error registering user:', err);
+        }
       });
   }
 

@@ -52,7 +52,7 @@ namespace ThaiBubbles_H6.Repositories
             new Claim(ClaimTypes.Name, user.Email), // User's email as the identity
             new Claim("FirstName", user.FName),     // Custom claim for first name
             new Claim("LastName", user.LName),      // Custom claim for last name
-            new Claim("PhoneNr", user.PhoneNr.ToString()), // Phone number as a custom claim
+            new Claim("PhoneNr", user.PhoneNr), // Phone number as a custom claim
             new Claim("Address", user.Address),      // Address as a custom claim
             new Claim("City", user.CityId.ToString()),
             new Claim(ClaimTypes.Role, user.Role.RoleType) // Add RoleType to claims
@@ -98,14 +98,6 @@ namespace ThaiBubbles_H6.Repositories
         {
             _context = context;
             _configuration = configuration;
-        }
-
-
-        public async Task<User> CreateUser(User newUser)
-        {
-            _context.User.Add(newUser);
-            await _context.SaveChangesAsync();
-            return newUser;
         }
 
 
