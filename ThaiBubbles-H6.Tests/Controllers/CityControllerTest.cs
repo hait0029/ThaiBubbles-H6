@@ -131,7 +131,7 @@ namespace ThaiBubbles_H6.Tests.Controllers
             Assert.Equal(updatedCity.CityName, returnedCity.CityName);
         }
 
-        [Fact]              // This one fails, there seems to be a problem in the controller
+        [Fact]              // This one fails, there seems to be a problem in the controller        // Løst
         public async Task PutCity_ShouldReturnNotFound_WhenCityDoesNotExist()
         {
             // Arrange

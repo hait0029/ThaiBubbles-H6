@@ -57,20 +57,23 @@ namespace ThaiBubbles_H6.Controllers
         {
             try
             {
+                // Call the repository method to update the city
                 var cityResult = await _cityRepo.UpdateCity(city, cityId);
 
-                if (city == null)
+                // If the result is null, return a NotFound response
+                if (cityResult == null)
                 {
                     return NotFound($"City with id {cityId} was not found");
                 }
 
+                // Return the updated city with a success response
+                return Ok(cityResult);
             }
             catch (Exception ex)
             {
+                // Handle any exceptions and return a Problem response
                 return Problem(ex.Message);
             }
-            return Ok(city);
-
         }
 
         //Create Method
