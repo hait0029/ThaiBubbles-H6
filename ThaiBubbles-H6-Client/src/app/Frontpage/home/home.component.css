@@ -1,0 +1,43 @@
+.image-switcher-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px; /* Space between image and arrows */
+  position: relative;
+}
+
+a img {
+  width: 150px; /* Adjust size as needed */
+  transition: transform 0.3s ease;
+}
+
+a img.shrink-on-hover:hover {
+  transform: scale(0.95); /* Shrink effect on hover */
+}
+
+button {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+button.prev {
+  left: 0;
+}
+
+button.next {
+  right: 0;
+}
