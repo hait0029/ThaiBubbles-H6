@@ -7,7 +7,7 @@ export interface User {
   password: string;
   fName: string;
   lName: string;
-  phoneNr: number;
+  phoneNr: string;
   address: string;
   cityId: number;  // Keep this as number as per your backend model
   roleID?: number; // Optional role ID, in case it is not assigned
