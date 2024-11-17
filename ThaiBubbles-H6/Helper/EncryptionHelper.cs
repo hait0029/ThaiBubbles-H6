@@ -7,15 +7,14 @@ namespace ThaiBubbles_H6.Helper
 {
     public class EncryptionHelper
     {
-        // Ensure your key is exactly 32 bytes for AES-256 and your IV is exactly 16 bytes
-        private static readonly byte[] Key = Encoding.UTF8.GetBytes("12345678901234567890123456789012"); // 32 bytes
-        private static readonly byte[] IV = Encoding.UTF8.GetBytes("1234567890123456"); // 16 bytes
+        // Ensure the key and IV are Base64-encoded strings
+        private static readonly byte[] Key = Convert.FromBase64String("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=");
+        private static readonly byte[] IV = Convert.FromBase64String("MTIzNDU2Nzg5MDEyMzQ1Ng==");
 
         public static string Encrypt(string plainText)
         {
             try
             {
-                // Convert plainText to bytes
                 byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
 
                 using (Aes aesAlg = Aes.Create())
@@ -30,11 +29,9 @@ namespace ThaiBubbles_H6.Helper
                     {
                         using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
                         {
-                            // Write the byte array directly to the stream
                             csEncrypt.Write(plainTextBytes, 0, plainTextBytes.Length);
                         }
 
-                        // Return the base64 string of the encrypted data
                         return Convert.ToBase64String(msEncrypt.ToArray());
                     }
                 }
@@ -50,7 +47,9 @@ namespace ThaiBubbles_H6.Helper
         {
             try
             {
-                // Convert base64 string to byte array
+                // Log the cipherText before decryption
+                Console.WriteLine($"Decrypting cipherText: {cipherText}");
+
                 byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
 
                 using (Aes aesAlg = Aes.Create())
@@ -67,8 +66,9 @@ namespace ThaiBubbles_H6.Helper
                         {
                             using (StreamReader srDecrypt = new StreamReader(csDecrypt))
                             {
-                                // Read the decrypted data from the stream
-                                return srDecrypt.ReadToEnd();
+                                var decryptedText = srDecrypt.ReadToEnd();
+                                Console.WriteLine($"Decrypted text: {decryptedText}");
+                                return decryptedText;
                             }
                         }
                     }
@@ -76,9 +76,11 @@ namespace ThaiBubbles_H6.Helper
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Decryption failed with error: " + ex.Message);
+                // Log detailed error info
+                Console.WriteLine($"Decryption failed with error: {ex.Message}");
                 throw new Exception("Decryption failed.", ex);
             }
         }
+
     }
 }

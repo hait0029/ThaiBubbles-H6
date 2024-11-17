@@ -28,15 +28,23 @@ namespace ThaiBubbles_H6.Repositories
 
         public async Task<City> UpdateCity(City updatecity, int cityId)
         {
+            // Retrieve the city by ID
             City city = await GetCityById(cityId);
-            if (city != null && UpdateCity != null)
-            {
-                city.CityID = updatecity.CityID;
-                city.CityName = updatecity.CityName;
-                city.ZIPCode = updatecity.ZIPCode;
 
-                await _context.SaveChangesAsync();
+            // Check if the city exists
+            if (city == null)
+            {
+                return null; // Return null if the city was not found
             }
+
+            // Proceed to update the city if it exists
+            city.CityID = updatecity.CityID;
+            city.CityName = updatecity.CityName;
+            city.ZIPCode = updatecity.ZIPCode;
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+
             return city;
         }
         public async Task<City> DeleteCity(int cityId)

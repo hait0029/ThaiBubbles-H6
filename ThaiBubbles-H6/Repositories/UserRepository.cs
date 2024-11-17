@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ThaiBubbles_H6.Helper;
 
 namespace ThaiBubbles_H6.Repositories
 {
@@ -119,17 +120,18 @@ namespace ThaiBubbles_H6.Repositories
 
             if (user != null && updateUser != null)
             {
-                user.Email = updateUser.Email;
-                user.UserID = updateUser.UserID;
-                user.FName = updateUser.FName;
-                user.LName = updateUser.LName;
-                user.PhoneNr = updateUser.PhoneNr;
-                user.Address = updateUser.Address;
+                // Encrypt the fields before updating
+                user.Email = EncryptionHelper.Encrypt(updateUser.Email); // Re-encrypt the Email
+                user.FName = EncryptionHelper.Encrypt(updateUser.FName); // Re-encrypt the First Name
+                user.LName = EncryptionHelper.Encrypt(updateUser.LName); // Re-encrypt the Last Name
+                user.PhoneNr = EncryptionHelper.Encrypt(updateUser.PhoneNr); // Re-encrypt the Phone Number
+                user.Address = EncryptionHelper.Encrypt(updateUser.Address); // Re-encrypt the Address
+                user.CityId = updateUser.CityId;
+                user.RoleID = updateUser.RoleID;
 
-                // Check if the password has changed
+                // If the password has changed, hash the new password
                 if (updateUser.Password != user.Password)
                 {
-                    // Hash the new password before saving
                     var hashedPassword = BCrypt.Net.BCrypt.HashPassword(updateUser.Password);
                     user.Password = hashedPassword;
 
@@ -149,6 +151,7 @@ namespace ThaiBubbles_H6.Repositories
             Console.WriteLine("User updated successfully.");
             return await GetUserById(userId); // Return the updated user
         }
+
 
         public async Task<User> DeleteUser(int userId)
         {

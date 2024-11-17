@@ -47,14 +47,14 @@ export class SignupComponent implements OnInit {
   register() {
     // Encrypt sensitive fields using EncryptionService
     const encryptedUser = {
-      email: this.encryptionService.encrypt(this.email),  // Encrypt email
-      password: this.password,  // Password should be handled by backend (hashed)
-      fName: this.encryptionService.encrypt(this.fName),  // Encrypt first name
-      lName: this.encryptionService.encrypt(this.lName),  // Encrypt last name
-      phoneNr: this.encryptionService.encrypt(this.phoneNr),  // Encrypt phone number
-      address: this.encryptionService.encrypt(this.address),  // Encrypt address
-      cityId: this.cityId,  // Use the city ID without encryption (foreign key)
-      cityName: this.cityName,  // Include the city name for display or further use
+      email: this.email,  // Plain text email
+      password: this.password,  // Password handled by backend (hashed)
+      fName: this.fName,  // Plain text first name
+      lName: this.lName,  // Plain text last name
+      phoneNr: this.phoneNr,  // Plain text phone number
+      address: this.address,  // Plain text address
+      cityId: this.cityId,  // City ID (no encryption)
+      cityName: this.cityName,  // City name (no encryption)
       roleType: 'Customer'  // Default role
     };
 

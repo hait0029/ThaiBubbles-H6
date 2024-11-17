@@ -37,18 +37,5 @@ export class UserService {
   }
 
 
-  // Fetch user profile and decrypt the fields
-  getUserProfile(userId: number): Observable<User> {
-    return this.http.get<User>(`${environment.apiurl}user/${userId}`).pipe(
-      map(user => {
-        // Decrypt user data (if necessary)
-        user.email = this.encryptionService.decrypt(user.email);
-        user.fName = this.encryptionService.decrypt(user.fName);
-        user.lName = this.encryptionService.decrypt(user.lName);
-        user.phoneNr = this.encryptionService.decrypt(user.phoneNr);
-        user.address = this.encryptionService.decrypt(user.address);
-        return user;
-      })
-    );
-  }
+
 }
