@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ThaiBubbles_H6.Helper;
 
 namespace ThaiBubbles_H6.Repositories
 {
@@ -52,7 +53,7 @@ namespace ThaiBubbles_H6.Repositories
             new Claim(ClaimTypes.Name, user.Email), // User's email as the identity
             new Claim("FirstName", user.FName),     // Custom claim for first name
             new Claim("LastName", user.LName),      // Custom claim for last name
-            new Claim("PhoneNr", user.PhoneNr.ToString()), // Phone number as a custom claim
+            new Claim("PhoneNr", user.PhoneNr), // Phone number as a custom claim
             new Claim("Address", user.Address),      // Address as a custom claim
             new Claim("City", user.CityId.ToString()),
             new Claim(ClaimTypes.Role, user.Role.RoleType) // Add RoleType to claims
@@ -101,14 +102,6 @@ namespace ThaiBubbles_H6.Repositories
         }
 
 
-        public async Task<User> CreateUser(User newUser)
-        {
-            _context.User.Add(newUser);
-            await _context.SaveChangesAsync();
-            return newUser;
-        }
-
-
         public async Task<List<User>> GetAllUsers()
         {
             return await _context.User.Include(e => e.Cities).Include(e => e.Role).ToListAsync();
@@ -127,17 +120,18 @@ namespace ThaiBubbles_H6.Repositories
 
             if (user != null && updateUser != null)
             {
-                user.Email = updateUser.Email;
-                user.UserID = updateUser.UserID;
-                user.FName = updateUser.FName;
-                user.LName = updateUser.LName;
-                user.PhoneNr = updateUser.PhoneNr;
-                user.Address = updateUser.Address;
+                // Encrypt the fields before updating
+                user.Email = EncryptionHelper.Encrypt(updateUser.Email); // Re-encrypt the Email
+                user.FName = EncryptionHelper.Encrypt(updateUser.FName); // Re-encrypt the First Name
+                user.LName = EncryptionHelper.Encrypt(updateUser.LName); // Re-encrypt the Last Name
+                user.PhoneNr = EncryptionHelper.Encrypt(updateUser.PhoneNr); // Re-encrypt the Phone Number
+                user.Address = EncryptionHelper.Encrypt(updateUser.Address); // Re-encrypt the Address
+                user.CityId = updateUser.CityId;
+                user.RoleID = updateUser.RoleID;
 
-                // Check if the password has changed
+                // If the password has changed, hash the new password
                 if (updateUser.Password != user.Password)
                 {
-                    // Hash the new password before saving
                     var hashedPassword = BCrypt.Net.BCrypt.HashPassword(updateUser.Password);
                     user.Password = hashedPassword;
 
@@ -158,6 +152,7 @@ namespace ThaiBubbles_H6.Repositories
             return await GetUserById(userId); // Return the updated user
         }
 
+
         public async Task<User> DeleteUser(int userId)
         {
             User user = await GetUserById(userId);
@@ -167,6 +162,14 @@ namespace ThaiBubbles_H6.Repositories
                 await _context.SaveChangesAsync();
             }
             return user;
+        }
+
+        public async Task<List<User>> SearchUsersAsync(string searchTerm)
+        {
+            return await _context.User
+                .Include(p => p.Cities)  // Include User information
+                .Where(p => p.FName.Contains(searchTerm) || p.LName.Contains(searchTerm))
+                .ToListAsync();
         }
     }
 }

@@ -66,19 +66,19 @@ export class AuthService {
   }
 
   // Decode token to update current user data
-  private decodeToken() {
+  decodeToken() {
     if (this.token) {
       const decoded: any = jwtDecode(this.token);
-      console.log('Decoded Token:', decoded); // Add this to see the decoded content
-
-      // Ensure that decoded contains userID and other fields
-      if (decoded && decoded.userID) {
-        this.currentUserSubject.next(decoded);
+      console.log('Decoded Token:', decoded); // Check the decoded content here
+  
+      if (decoded && decoded.userID && decoded.role) {
+        this.currentUserSubject.next(decoded); // Set user data to currentUserSubject
       } else {
-        console.error('Decoded token does not contain userID');
+        console.error('Decoded token does not contain userID or role');
       }
     }
   }
+  
 
 
 

@@ -2,14 +2,15 @@ import { User } from './../Models/User';
 import { environment } from '../../environments/environments';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { EncryptionService } from './encryption.service';
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private apiUrl = environment.apiurl + 'User';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private encryptionService: EncryptionService) {}
 
   getAll(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl);
@@ -34,4 +35,7 @@ export class UserService {
   delete(userId: number): Observable<User> {
     return this.http.delete<User>(`${this.apiUrl}/${userId}`);
   }
+
+
+
 }

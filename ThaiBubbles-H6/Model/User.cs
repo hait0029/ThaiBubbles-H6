@@ -10,11 +10,11 @@ namespace ThaiBubbles_H6.Model
         public string Password { get; set; } = string.Empty;
         public string FName { get; set; } = string.Empty;
         public string LName { get; set; } = string.Empty;
-        public int PhoneNr { get; set; } = 0;
+        public string PhoneNr { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public int? FavoriteId { get; set; }
         public int? CityId { get; set; }
-        [JsonIgnore]
+        
         public City? Cities { get; set; }
         [JsonIgnore]
         public List<Favorite?> FavoriteFk { get; set; } = new List<Favorite?>(); // en til mange relation mellem User til Favorite
