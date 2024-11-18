@@ -25,7 +25,7 @@
 
     <div>
       <label for="phoneNr">Phone Number:</label>
-      <input type="number" id="phoneNr" [(ngModel)]="userCopy.phoneNr" name="phoneNr" />
+      <input type="text" id="phoneNr" [(ngModel)]="userCopy.phoneNr" name="phoneNr" />
     </div>
 
     <div>
@@ -58,6 +58,7 @@
         <th>Phone Number</th>
         <th>Address</th>
         <th>City ID</th>
+        <th>Role ID</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -69,6 +70,7 @@
         <td>{{ user.phoneNr }}</td>
         <td>{{ user.address }}</td>
         <td>{{ user.cityId }}</td>
+        <td>{{ user.roleID }}</td>
         <td>
           <button (click)="edit(user)">Edit</button>
           <button (click)="delete(user)">Delete</button>

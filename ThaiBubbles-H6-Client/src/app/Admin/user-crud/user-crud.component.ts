@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 export class UserCrudComponent {
 
   userArray: User[] = [];
-  user: User = { userID: 0, email: '', password: '', fName: '', lName: '', phoneNr: 0, address: '', cityId: 0, roleID:0
+  user: User = { userID: 0, email: '', password: '', fName: '', lName: '', phoneNr: '', address: '', cityId: 0, roleID:0
    };
   userCopy: User = { ...this.user }; // Temporary object for form data
 
@@ -70,7 +70,7 @@ export class UserCrudComponent {
   }
 
   resetForm(): void {
-    this.user = { userID: 0, email: '', password: '', fName: '', lName: '', phoneNr: 0, address: '', cityId: 0, roleID:0 };
+    this.user = { userID: 0, email: '', password: '', fName: '', lName: '', phoneNr: '', address: '', cityId: 0, roleID:0 };
     this.userCopy = { ...this.user };
   }
 }

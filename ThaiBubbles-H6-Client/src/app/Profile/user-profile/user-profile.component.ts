@@ -7,6 +7,7 @@ import { UserService } from '../../services/user.service';  // Import UserServic
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CityService } from '../../services/city.service';
+import { EncryptionService } from '../../services/encryption.service';  // Import EncryptionService
 
 @Component({
   selector: 'app-user-profile',
@@ -26,7 +27,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private userService: UserService,
-    private cityService: CityService  // Inject CityService
+    private cityService: CityService,  // Inject CityService
+
   ) {}
 
   ngOnInit(): void {

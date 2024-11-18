@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace ThaiBubbles_h6.Model
+namespace ThaiBubbles_H6.Model
 {
 
     public class Category
