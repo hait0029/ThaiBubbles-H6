@@ -1,0 +1,186 @@
+<div class="checkout-container">
+  <form
+    *ngIf="!isPaymentFormVisible"
+    [formGroup]="checkoutForm"
+    (ngSubmit)="onSubmitCustomerInfo()"
+  >
+    <h2>Kundeoplysninger</h2>
+    <!-- Kundeoplysninger form -->
+    <div class="form-group">
+      <label for="name">Navn</label>
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        placeholder="Fornavn Efternavn"
+      />
+      <span
+        *ngIf="
+          checkoutForm.get('name')?.invalid && checkoutForm.get('name')?.touched
+        "
+        class="error"
+        >Udfyld navn</span
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="address">Adresse</label>
+      <input
+        type="text"
+        id="address"
+        formControlName="address"
+        placeholder="Vejnavn og husnummer"
+      />
+      <span
+        *ngIf="
+          checkoutForm.get('address')?.invalid &&
+          checkoutForm.get('address')?.touched
+        "
+        class="error"
+        >Udfyld adresse</span
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="zip">Postnummer</label>
+      <input type="text" id="zip" formControlName="zip" placeholder="1234" />
+      <span
+        *ngIf="
+          checkoutForm.get('zip')?.invalid && checkoutForm.get('zip')?.touched
+        "
+        class="error"
+        >Ugyldigt postnummer</span
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="city">By</label>
+      <input type="text" id="city" formControlName="city" placeholder="By" />
+      <span
+        *ngIf="
+          checkoutForm.get('city')?.invalid && checkoutForm.get('city')?.touched
+        "
+        class="error"
+        >Udfyld by</span
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        placeholder="eksempel@domain.com"
+      />
+      <span
+        *ngIf="
+          checkoutForm.get('email')?.invalid &&
+          checkoutForm.get('email')?.touched
+        "
+        class="error"
+        >Ugyldig e-mail</span
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Telefonnummer</label>
+      <input
+        type="text"
+        id="phone"
+        formControlName="phone"
+        placeholder="12345678"
+      />
+      <span
+        *ngIf="
+          checkoutForm.get('phone')?.invalid &&
+          checkoutForm.get('phone')?.touched
+        "
+        class="error"
+        >Ugyldigt telefonnummer</span
+      >
+    </div>
+
+    <!-- Videre til betaling knap -->
+    <button type="submit" [disabled]="checkoutForm.invalid">
+      Videre til betaling
+    </button>
+  </form>
+
+  <!-- Betalingsoplysninger form vises efter at Kundeoplysninger er udfyldt -->
+  <div *ngIf="isPaymentFormVisible == true">
+    <h2>Betalingsoplysninger</h2>
+    <form [formGroup]="paymentForm" (ngSubmit)="onSubmitPaymentInfo()">
+      <div class="form-group">
+        <label for="cardNumber">Kortnummer</label>
+        <input
+          type="text"
+          id="cardNumber"
+          formControlName="cardNumber"
+          placeholder="1234 5678 1234 5678"
+        />
+        <span
+          *ngIf="
+            paymentForm.get('cardNumber')?.invalid &&
+            paymentForm.get('cardNumber')?.touched
+          "
+          class="error"
+          >Ugyldigt kortnummer</span
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="expiryDate">Udløbsdato</label>
+        <input
+          type="text"
+          id="expiryDate"
+          formControlName="expiryDate"
+          placeholder="MM/ÅÅ"
+        />
+        <span
+          *ngIf="
+            paymentForm.get('expiryDate')?.invalid &&
+            paymentForm.get('expiryDate')?.touched
+          "
+          class="error"
+          >Ugyldig udløbsdato</span
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="cvv">CVV</label>
+        <input type="text" id="cvv" formControlName="cvv" placeholder="123" />
+        <span
+          *ngIf="
+            paymentForm.get('cvv')?.invalid && paymentForm.get('cvv')?.touched
+          "
+          class="error"
+          >Ugyldigt CVV</span
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="cardHolder">Kortholder</label>
+        <input
+          type="text"
+          id="cardHolder"
+          formControlName="cardHolder"
+          placeholder="Navn på kortholder"
+        />
+        <span
+          *ngIf="
+            paymentForm.get('cardHolder')?.invalid &&
+            paymentForm.get('cardHolder')?.touched
+          "
+          class="error"
+          >Udfyld kortholder</span
+        >
+      </div>
+
+      <!-- Videre til betaling knap -->
+      <button type="submit" [disabled]="paymentForm.invalid">
+        Bekræft betaling
+      </button>
+    </form>
+  </div>
+</div>
