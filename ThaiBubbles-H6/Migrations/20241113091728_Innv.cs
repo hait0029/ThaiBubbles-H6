@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ThaiBubbles_H6.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Innv : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

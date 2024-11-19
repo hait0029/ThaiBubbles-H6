@@ -1,1 +1,13 @@
-<p>home works!</p>
+<div class="image-switcher-container">
+  <button class="prev" (click)="previousImage()">&#10094;</button>
+
+  <a href="menu">
+    <img
+      [src]="'assets/' + images[currentIndex]"
+      alt="Bubble Tea Icon"
+      class="shrink-on-hover"
+    />
+  </a>
+
+  <button class="next" (click)="nextImage()">&#10095;</button>
+</div>
