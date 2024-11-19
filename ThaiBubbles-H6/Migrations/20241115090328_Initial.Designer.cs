@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThaiBubbles_H6.Database;
 
@@ -11,9 +12,11 @@ using ThaiBubbles_H6.Database;
 namespace ThaiBubbles_H6.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20241115090328_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,23 +24,6 @@ namespace ThaiBubbles_H6.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ThaiBubbles_H6.Model.Category", b =>
-                {
-                    b.Property<int>("CategoryID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryID"));
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CategoryID");
-
-                    b.ToTable("Category");
-                });
 
             modelBuilder.Entity("ThaiBubbles_H6.Model.City", b =>
                 {
@@ -180,9 +166,8 @@ namespace ThaiBubbles_H6.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PhoneNr")
+                        .HasColumnType("int");
 
                     b.Property<int?>("RoleID")
                         .HasColumnType("int");
@@ -194,6 +179,23 @@ namespace ThaiBubbles_H6.Migrations
                     b.HasIndex("RoleID");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("ThaiBubbles_h6.Model.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryID"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("ThaiBubbles_h6.Model.Order", b =>
@@ -305,16 +307,11 @@ namespace ThaiBubbles_H6.Migrations
 
             modelBuilder.Entity("ThaiBubbles_h6.Model.Product", b =>
                 {
-                    b.HasOne("ThaiBubbles_H6.Model.Category", "category")
+                    b.HasOne("ThaiBubbles_h6.Model.Category", "category")
                         .WithMany("product")
                         .HasForeignKey("CategoryId");
 
                     b.Navigation("category");
-                });
-
-            modelBuilder.Entity("ThaiBubbles_H6.Model.Category", b =>
-                {
-                    b.Navigation("product");
                 });
 
             modelBuilder.Entity("ThaiBubbles_H6.Model.City", b =>
@@ -332,6 +329,11 @@ namespace ThaiBubbles_H6.Migrations
                     b.Navigation("FavoriteFk");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("ThaiBubbles_h6.Model.Category", b =>
+                {
+                    b.Navigation("product");
                 });
 
             modelBuilder.Entity("ThaiBubbles_h6.Model.Order", b =>

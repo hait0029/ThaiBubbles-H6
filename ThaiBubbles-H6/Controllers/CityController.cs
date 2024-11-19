@@ -76,6 +76,7 @@ namespace ThaiBubbles_H6.Controllers
             }
         }
 
+
         //Create Method
         [HttpPost]
         public async Task<ActionResult> PostCity(City city)

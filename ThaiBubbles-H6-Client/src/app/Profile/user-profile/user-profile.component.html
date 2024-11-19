@@ -1,9 +1,3 @@
-
-
-
-
-
-
 <div *ngIf="isLoading">Loading profile...</div>
 
 <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
@@ -11,10 +5,12 @@
 <div *ngIf="!isLoading && !errorMessage && userProfile">
   <h2>User Profile</h2>
 
-  <p><strong>Name:</strong> {{ userProfile.fName }} {{ userProfile.lName }}</p>
-  <p><strong>Email:</strong> {{ userProfile.email }}</p>
-  <p><strong>Phone:</strong> {{ userProfile.phoneNr }}</p>
-  <p><strong>Address:</strong> {{ userProfile.address }}</p>
+
+  <p><strong>Name:</strong> {{ userProfile.fName || 'N/A' }} {{ userProfile.lName || 'N/A' }}</p>
+  <p><strong>Email:</strong> {{ userProfile.email || 'N/A' }}</p>
+  <p><strong>Phone:</strong> {{ userProfile.phoneNr || 'N/A' }}</p>
+  <p><strong>Address:</strong> {{ userProfile.address || 'N/A' }}</p>
   <p><strong>City:</strong> {{ cityName || 'City not found' }}</p>
-  <p><strong>Role:</strong> {{ userProfile?.role?.roleType }}</p>
+  <p><strong>Role:</strong> {{ userProfile?.role?.roleType || 'Role not assigned' }}</p>
+
 </div>

@@ -11,24 +11,39 @@ import { UserProfileComponent } from './Profile/user-profile/user-profile.compon
 import { SearchResultComponent } from './search-result/search-result.component';
 import { UserCrudComponent } from './Admin/user-crud/user-crud.component';
 import { ProductCrudComponent } from './Admin/product-crud/product-crud.component';
+import { CartComponent } from './cart/cart.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent },
-    { path: 'menu', component: MenuComponent },
-    { path: 'about', component: AboutComponent },
-    { path: 'category/:categoryID', component: ProductsComponent },
+  { path: '', component: HomeComponent },
+  { path: 'menu', component: MenuComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'category/:categoryID', component: ProductsComponent },
+  { path: 'cart', component: CartComponent },
+  { path: 'search', component: SearchResultComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'checkout', component: CheckoutComponent },
 
-    { path: 'search', component: SearchResultComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'signup', component: SignupComponent },
+  // Admin Routes (Protected by adminGuard)
+  {
+    path: 'admin',
+    component: AdminDashboardComponent,
+    canActivate: [adminGuard],
+  },
+  {
+    path: 'admin/user-crud',
+    component: UserCrudComponent,
+    canActivate: [adminGuard],
+  },
+  {
+    path: 'admin/product-crud',
+    component: ProductCrudComponent,
+    canActivate: [adminGuard],
+  },
 
-    // Admin Routes (Protected by adminGuard)
-    { path: 'admin', component: AdminDashboardComponent, canActivate: [adminGuard] },
-    {path: 'admin/user-crud', component: UserCrudComponent, canActivate: [adminGuard]},
-    {path: 'admin/product-crud', component: ProductCrudComponent, canActivate: [adminGuard]},
-
-    // Profile Route (accessible only to logged-in users)
-    { path: 'profile', component: UserProfileComponent },
-    // You can add more admin routes here, for example:
-    // { path: 'admin/products', component: AdminProductsComponent, canActivate: [adminGuard] }
+  // Profile Route (accessible only to logged-in users)
+  { path: 'profile', component: UserProfileComponent },
+  // You can add more admin routes here, for example:
+  // { path: 'admin/products', component: AdminProductsComponent, canActivate: [adminGuard] }
 ];
