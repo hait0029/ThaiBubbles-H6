@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-
-namespace ThaiBubbles_H6.Helper
+﻿namespace ThaiBubbles_H6.Helper
 {
     public class EncryptionHelper
     {

@@ -1,8 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using ThaiBubbles_H6.Helper;
+﻿using ThaiBubbles_H6.Helper;
 
 namespace ThaiBubbles_H6.Repositories
 {
