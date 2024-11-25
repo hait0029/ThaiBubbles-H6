@@ -12,6 +12,8 @@
         public string Description { get; set; } = string.Empty;
         //public bool Favorite { get; set; } = false;
 
+        public string? ImageUrl { get; set; }
+
         public int? CategoryId { get; set; }
         public Category? category { get; set; }
 
