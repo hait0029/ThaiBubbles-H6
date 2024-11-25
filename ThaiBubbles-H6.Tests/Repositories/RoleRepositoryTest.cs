@@ -23,6 +23,7 @@ namespace ThaiBubbles_H6.Tests.Repositories
         public async Task CreateRole_ShouldAddRole_WhenValid()
         {
             // Arrange
+            await _context.Database.EnsureDeletedAsync();
             var role = new Role { RoleType = "Admin" };
 
             // Act
