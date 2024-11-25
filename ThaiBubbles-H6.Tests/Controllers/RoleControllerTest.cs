@@ -66,7 +66,7 @@ namespace ThaiBubbles_H6.Tests.Controllers
         public async Task PutRole_ShouldReturnNotFound_WhenRoleDoesNotExist()
         {
             // Arrange
-            var updatedRole = new Role { RoleType = "SuperAdmin" };
+            var updatedRole = new Role { RoleType = "Admin" };
             _repositoryMock.Setup(repo => repo.UpdateRole(1, updatedRole)).ReturnsAsync((Role)null);
 
             // Act

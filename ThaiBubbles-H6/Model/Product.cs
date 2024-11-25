@@ -1,4 +1,4 @@
-﻿namespace ThaiBubbles_h6.Model
+﻿namespace ThaiBubbles_H6.Model
 {
 
     public class Product

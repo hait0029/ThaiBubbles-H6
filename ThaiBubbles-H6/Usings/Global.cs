@@ -11,7 +11,6 @@ global using ThaiBubbles_H6.Interfaces;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Mvc;
 global using System.Text.Json.Serialization;
-global using ThaiBubbles_h6.Model;
 global using Microsoft.IdentityModel.Tokens;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
