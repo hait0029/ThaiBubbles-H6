@@ -6,16 +6,13 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule,
-    FormsModule,
-     CommonModule],
+  imports: [RouterModule, FormsModule, CommonModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  images: string[] = ['bubbleteaicon.png'];
+  images: string[] = ['bubbleteaicon.png', 'unnamed.png'];
   currentIndex: number = 0;
-
 
   nextImage(): void {
     this.currentIndex = (this.currentIndex + 1) % this.images.length;

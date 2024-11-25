@@ -1,8 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using ThaiBubbles_H6.Helper;
+﻿using ThaiBubbles_H6.Helper;
 
 namespace ThaiBubbles_H6.Repositories
 {
@@ -78,6 +74,7 @@ namespace ThaiBubbles_H6.Repositories
             return BCrypt.Net.BCrypt.Verify(password, storedHash);
         }
 
+        /*
         public async Task<User> CreateLogin(User newLogin)
         {
             var existingLogin = await _context.Login.FirstOrDefaultAsync(e => e.Email == newLogin.Email);
@@ -91,10 +88,55 @@ namespace ThaiBubbles_H6.Repositories
             await _context.SaveChangesAsync();
 
             return newLogin;
+        } 
+        */
+        /*
+        public async Task<User> CreateLogin(User newLogin)
+        {
+            // Check for existing email (you have this)
+            var existingLogin = await _context.User.FirstOrDefaultAsync(e => e.Email == newLogin.Email);
+            if (existingLogin != null)
+            {
+                throw new ArgumentException("Login already exists", nameof(newLogin.Email));
+            }
+
+            // Hash the password
+            newLogin.Password = BCrypt.Net.BCrypt.HashPassword(newLogin.Password);
+
+            _context.User.Add(newLogin);
+            await _context.SaveChangesAsync();
+
+            return newLogin;
+        }
+        */
+        public async Task<User> CreateLogin(User newLogin)
+        {
+            // Validate required fields
+            if (string.IsNullOrEmpty(newLogin.Email) || string.IsNullOrEmpty(newLogin.Password))
+            {
+                throw new ArgumentException("Email and Password are required fields.");
+            }
+
+            var existingLogin = await _context.User.FirstOrDefaultAsync(e => e.Email == newLogin.Email);
+            if (existingLogin != null)
+            {
+                throw new ArgumentException("Login already exists", nameof(newLogin.Email));
+            }
+
+            // Hash the password before saving
+            string salt = BCrypt.Net.BCrypt.GenerateSalt(); // I made this change
+            newLogin.Password = BCrypt.Net.BCrypt.HashPassword(newLogin.Password, salt);
+
+            _context.User.Add(newLogin);
+            await _context.SaveChangesAsync();
+
+            return newLogin;
         }
 
-        
-        
+
+
+
+
         public UserRepository(DatabaseContext context, IConfiguration configuration)
         {
             _context = context;
@@ -113,6 +155,7 @@ namespace ThaiBubbles_H6.Repositories
 
         }
 
+        /*
         public async Task<User> UpdateUser(int userId, User updateUser)
         {
             // Retrieve the current user record from the database
@@ -151,6 +194,38 @@ namespace ThaiBubbles_H6.Repositories
             Console.WriteLine("User updated successfully.");
             return await GetUserById(userId); // Return the updated user
         }
+        */
+        public async Task<User> UpdateUser(int userId, User updateUser)
+        {
+            // Retrieve the current user record from the database
+            var existingUser = await GetUserById(userId);
+            if (existingUser == null)
+            {
+                throw new KeyNotFoundException($"User with ID {userId} not found.");
+            }
+
+            // Update the existing user fields
+            existingUser.Email = EncryptionHelper.Encrypt(updateUser.Email);
+            existingUser.FName = EncryptionHelper.Encrypt(updateUser.FName);
+            existingUser.LName = EncryptionHelper.Encrypt(updateUser.LName);
+            existingUser.PhoneNr = EncryptionHelper.Encrypt(updateUser.PhoneNr);
+            existingUser.Address = EncryptionHelper.Encrypt(updateUser.Address);
+            existingUser.CityId = updateUser.CityId;
+            existingUser.RoleID = updateUser.RoleID;
+
+            // Check if the password has changed and hash it
+            if (!BCrypt.Net.BCrypt.Verify(updateUser.Password, existingUser.Password))
+            {
+                existingUser.Password = BCrypt.Net.BCrypt.HashPassword(updateUser.Password);
+            }
+
+            // Mark the entity as modified
+            _context.Entry(existingUser).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return existingUser;
+        }
+
 
 
         public async Task<User> DeleteUser(int userId)

@@ -74,7 +74,7 @@
             ProductList productList = await GetProductOrderListById(productOrderListId);
             if (productList != null)
             {
-                productList.ProductOrderListID = updateProductOrderList.ProductOrderListID;
+                // productList.ProductOrderListID = updateProductOrderList.ProductOrderListID;
                 productList.Quantity = updateProductOrderList.Quantity;
 
 

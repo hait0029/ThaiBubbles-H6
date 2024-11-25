@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using ThaiBubbles_H6.Model;
 
-namespace ThaiBubbles_h6.Model
+namespace ThaiBubbles_H6.Model
 {
 
     public class Order

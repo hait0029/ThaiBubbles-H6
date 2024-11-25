@@ -50,10 +50,18 @@
       />
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="!productForm.form.valid">
-      {{ productCopy.productID === 0 ? 'Add Product' : 'Save Changes' }}
+    <input type="file" accept=".jpg, .jpeg, .png" />
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="!productForm.form.valid"
+    >
+      {{ productCopy.productID === 0 ? "Add Product" : "Save Changes" }}
     </button>
-    <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancel</button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm()">
+      Cancel
+    </button>
   </form>
 
   <hr />
@@ -81,7 +89,9 @@
           <td>{{ product.categoryId }}</td>
           <td>
             <button class="btn btn-info" (click)="edit(product)">Edit</button>
-            <button class="btn btn-danger" (click)="delete(product)">Delete</button>
+            <button class="btn btn-danger" (click)="delete(product)">
+              Delete
+            </button>
           </td>
         </tr>
       </tbody>
