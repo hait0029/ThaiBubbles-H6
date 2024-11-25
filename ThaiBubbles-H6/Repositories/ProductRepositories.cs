@@ -39,6 +39,7 @@
                 product.Name = updateProduct.Name;
                 product.Price = updateProduct.Price;
                 product.Description = updateProduct.Description;
+                product.ImageUrl = updateProduct.ImageUrl;
                 product.CategoryId = updateProduct.CategoryId;
 
                 if (updateProduct.category != null)

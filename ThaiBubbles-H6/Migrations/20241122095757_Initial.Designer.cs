@@ -12,7 +12,7 @@ using ThaiBubbles_H6.Database;
 namespace ThaiBubbles_H6.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241117115705_Initial")]
+    [Migration("20241122095757_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -233,6 +233,9 @@ namespace ThaiBubbles_H6.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
