@@ -74,41 +74,6 @@ namespace ThaiBubbles_H6.Repositories
             return BCrypt.Net.BCrypt.Verify(password, storedHash);
         }
 
-        /*
-        public async Task<User> CreateLogin(User newLogin)
-        {
-            var existingLogin = await _context.Login.FirstOrDefaultAsync(e => e.Email == newLogin.Email);
-
-            if (existingLogin != null)
-            {
-                throw new ArgumentException("Login already exists", nameof(newLogin.Email));
-            }
-
-            _context.User.Add(newLogin);
-            await _context.SaveChangesAsync();
-
-            return newLogin;
-        } 
-        */
-        /*
-        public async Task<User> CreateLogin(User newLogin)
-        {
-            // Check for existing email (you have this)
-            var existingLogin = await _context.User.FirstOrDefaultAsync(e => e.Email == newLogin.Email);
-            if (existingLogin != null)
-            {
-                throw new ArgumentException("Login already exists", nameof(newLogin.Email));
-            }
-
-            // Hash the password
-            newLogin.Password = BCrypt.Net.BCrypt.HashPassword(newLogin.Password);
-
-            _context.User.Add(newLogin);
-            await _context.SaveChangesAsync();
-
-            return newLogin;
-        }
-        */
         public async Task<User> CreateLogin(User newLogin)
         {
             // Validate required fields
@@ -155,46 +120,7 @@ namespace ThaiBubbles_H6.Repositories
 
         }
 
-        /*
-        public async Task<User> UpdateUser(int userId, User updateUser)
-        {
-            // Retrieve the current user record from the database
-            User user = await GetUserById(userId);
-
-            if (user != null && updateUser != null)
-            {
-                // Encrypt the fields before updating
-                user.Email = EncryptionHelper.Encrypt(updateUser.Email); // Re-encrypt the Email
-                user.FName = EncryptionHelper.Encrypt(updateUser.FName); // Re-encrypt the First Name
-                user.LName = EncryptionHelper.Encrypt(updateUser.LName); // Re-encrypt the Last Name
-                user.PhoneNr = EncryptionHelper.Encrypt(updateUser.PhoneNr); // Re-encrypt the Phone Number
-                user.Address = EncryptionHelper.Encrypt(updateUser.Address); // Re-encrypt the Address
-                user.CityId = updateUser.CityId;
-                user.RoleID = updateUser.RoleID;
-
-                // If the password has changed, hash the new password
-                if (updateUser.Password != user.Password)
-                {
-                    var hashedPassword = BCrypt.Net.BCrypt.HashPassword(updateUser.Password);
-                    user.Password = hashedPassword;
-
-                    Console.WriteLine($"Password updated and hashed: {hashedPassword}"); // Debug log for password hash
-                }
-                else
-                {
-                    Console.WriteLine("Password not changed; skipping rehashing.");
-                }
-            }
-
-            // Mark the user entity as modified
-            _context.Entry(user).State = EntityState.Modified;
-
-            // Save changes to the database
-            await _context.SaveChangesAsync();
-            Console.WriteLine("User updated successfully.");
-            return await GetUserById(userId); // Return the updated user
-        }
-        */
+      
         public async Task<User> UpdateUser(int userId, User updateUser)
         {
             // Retrieve the current user record from the database
