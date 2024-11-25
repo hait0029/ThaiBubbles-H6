@@ -16,8 +16,8 @@ a img.shrink-on-hover:hover {
 }
 
 button {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+  background-color: #00000080;
+  color: #ffffff;
   border: none;
   padding: 10px;
   cursor: pointer;
@@ -31,7 +31,7 @@ button {
 }
 
 button:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: #000000cc;
 }
 
 button.prev {
