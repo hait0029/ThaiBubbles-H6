@@ -14,21 +14,10 @@ import {
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css',
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent {
   checkoutForm: FormGroup;
   paymentForm: FormGroup;
   isPaymentFormVisible = false; // Styrer visning af betalingsformularen
-  isLoggedIn = true; // Simulerer loginstatus (skift til din logik)
-
-  // Dummy-brugerdata til eksempler
-  userData = {
-    name: 'John Doe',
-    address: 'Eksempelgade 123',
-    zip: '1234',
-    city: 'København',
-    email: 'johndoe@example.com',
-    phone: '12345678',
-  };
 
   constructor(private fb: FormBuilder) {
     // Initialiserer formularerne her
@@ -53,20 +42,6 @@ export class CheckoutComponent implements OnInit {
       cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]],
       cardHolder: ['', Validators.required],
     });
-  }
-
-  ngOnInit() {
-    // Hvis brugeren er logget ind, udfyld kundeoplysninger
-    if (this.isLoggedIn) {
-      this.checkoutForm.patchValue({
-        name: this.userData.name,
-        address: this.userData.address,
-        zip: this.userData.zip,
-        city: this.userData.city,
-        email: this.userData.email,
-        phone: this.userData.phone,
-      });
-    }
   }
 
   onSubmitCustomerInfo() {
