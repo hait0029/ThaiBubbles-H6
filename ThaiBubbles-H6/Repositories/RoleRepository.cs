@@ -30,7 +30,7 @@
             Role role = await GetRoleById(roleId);
             if (role != null)
             {
-                role.RoleID = updateRole.RoleID;
+                // role.RoleID = updateRole.RoleID;
                 role.RoleType = updateRole.RoleType;
                 await _context.SaveChangesAsync();
             }

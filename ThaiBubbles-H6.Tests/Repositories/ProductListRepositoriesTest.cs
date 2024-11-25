@@ -23,6 +23,7 @@ namespace ThaiBubbles_H6.Tests.Repositories
         public async Task CreateProductOrderList_ShouldAddProductList_WhenValid()
         {
             // Arrange
+            await _context.Database.EnsureDeletedAsync();  // Clear the database before the test
             var productList = new ProductList { Quantity = 5, OrderId = null, ProductId = null };
 
             // Act
