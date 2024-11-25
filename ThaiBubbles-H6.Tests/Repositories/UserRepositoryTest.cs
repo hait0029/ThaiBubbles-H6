@@ -1,123 +1,171 @@
-﻿//using ThaiBubbles_H6.Model;
 
-//namespace ProjectUnitTests.Repositories
-//{
-//    public class UserRepositoryTest
-//    {
-//        private DbContextOptions<DatabaseContext> options;
-//        private DatabaseContext context;
-//        private UserRepository userRepository;
-//       // private Mock<IConfiguration> configurationMock = new();
+﻿using ThaiBubbles_H6.Helper;
+using ThaiBubbles_H6.Model;
 
-//        public UserRepositoryTest()
-//        {
-//            options = new DbContextOptionsBuilder<DatabaseContext>()
-//                .UseInMemoryDatabase("UserRepositoryTests")
-//                .Options;
+namespace ThaiBubbles_H6.Tests.Repositories
+{
+    public class UserRepositoryTest
+    {
+        private DbContextOptions<DatabaseContext> options;
+        private DatabaseContext context;
+        private UserRepository userRepository;
+        private Mock<Microsoft.Extensions.Configuration.IConfiguration> configurationMock = new();
 
-//            context = new DatabaseContext(options);
+        public UserRepositoryTest()
+        {
+            options = new DbContextOptionsBuilder<DatabaseContext>()
+                .UseInMemoryDatabase("UserRepositoryTests")
+                .Options;
 
-//            configurationMock.Setup(config => config["Jwt:Key"]).Returns("TestSecretKeyForJwt"); // Mock the JWT key
-//            userRepository = new UserRepository(context, configurationMock.Object);
-//        }
+            context = new DatabaseContext(options);
 
-//        [Fact]
-//        public async Task Authenticate_ShouldReturnToken_WhenCredentialsAreCorrect()
-//        {
-//            // Arrange
-//            string email = "test@example.com";
-//            string password = "Password123";
-//            var user = new User
-//            {
-//                UserID = 1,
-//                Email = email,
-//                Password = BCrypt.Net.BCrypt.HashPassword(password),
-//                FName = "Test",
-//                LName = "User",
-//                Role = new Role { RoleType = "Admin" }
-//            };
+            configurationMock.Setup(config => config["Jwt:Key"]).Returns("TestSecretKeyForJwt"); // Mock the JWT key
+            userRepository = new UserRepository(context, configurationMock.Object);
+        }
 
-//            await context.User.AddAsync(user);
-//            await context.SaveChangesAsync();
+        [Fact]
+        public async Task CreateUser_ShouldHashPassword_WhenAddingNewUser()
+        {
+            // Arrange
+            var user = new User
+            {
+                UserID = 1,
+                Email = "test@example.com",
+                Password = "PlainTextPassword"
+            };
 
-//            // Act
-//            var token = await userRepository.AuthenticateAsync(email, password);
+            // Act
+            var result = await userRepository.CreateLogin(user);
 
-//            // Assert
-//            Assert.NotNull(token);
-//            Assert.IsType<string>(token);
-//        }
+            // Assert
+            Assert.NotNull(result);
+            Assert.True(BCrypt.Net.BCrypt.Verify("PlainTextPassword", result.Password));
+        }
 
-//        [Fact]
-//        public async Task Authenticate_ShouldReturnNull_WhenCredentialsAreInvalid()
-//        {
-//            // Arrange
-//            string email = "test@example.com";
-//            string password = "WrongPassword";
-//            var user = new User
-//            {
-//                UserID = 1,
-//                Email = email,
-//                Password = BCrypt.Net.BCrypt.HashPassword("Password123")
-//            };
+        [Fact]
+        public async Task CreateUser_ShouldFail_WhenMissingRequiredFields()
+        {
+            // Arrange
+            await context.Database.EnsureDeletedAsync();
 
-//            await context.User.AddAsync(user);
-//            await context.SaveChangesAsync();
+            var incompleteUser = new User
+            {
+                // Missing Email and Password
+                FName = "Incomplete",
+                LName = "User"
+            };
 
-//            // Act
-//            var token = await userRepository.AuthenticateAsync(email, password);
+            // Act & Assert
+            await Assert.ThrowsAsync<DbUpdateException>(() => userRepository.CreateLogin(incompleteUser));
+        }
+        [Fact]
+        public async Task GetUserById_ShouldReturnNull_WhenUserIdIsInvalid()
+        {
+            // Arrange
+            await context.Database.EnsureDeletedAsync();
 
-//            // Assert
-//            Assert.Null(token);
-//        }
+            // Act
+            var result = await userRepository.GetUserById(99);  // ID does not exist
 
-//        [Fact]
-//        public async Task CreateUser_ShouldHashPassword_WhenAddingNewUser()
-//        {
-//            // Arrange
-//            var user = new User
-//            {
-//                UserID = 1,
-//                Email = "test@example.com",
-//                Password = "PlainTextPassword"
-//            };
+            // Assert
+            Assert.Null(result);
+        }
 
-//            // Act
-//            var result = await userRepository.CreateUser(user);
+        [Fact]
+        public async Task UpdateUser_ShouldUpdateEmailOnly()
+        {
+            // Arrange
+            await context.Database.EnsureDeletedAsync();
 
-//            // Assert
-//            Assert.NotNull(result);
-//            Assert.True(BCrypt.Net.BCrypt.Verify("PlainTextPassword", result.Password));
-//        }
+            var user = new User
+            {
+                UserID = 1,
+                FName = "Alice",
+                LName = "Smith",
+                Email = "old@example.com",
+                Password = BCrypt.Net.BCrypt.HashPassword("password123")
+            };
+            await context.User.AddAsync(user);
+            await context.SaveChangesAsync();
 
-//        [Fact]
-//        public async Task UpdateUser_ShouldHashPassword_WhenPasswordChanges()
-//        {
-//            // Arrange
-//            int userId = 1;
-//            var existingUser = new User
-//            {
-//                UserID = userId,
-//                Email = "test@example.com",
-//                Password = BCrypt.Net.BCrypt.HashPassword("OldPassword")
-//            };
+            var updatedUser = new User
+            {
+                Email = "new@example.com"
+            };
 
-//            var updatedUser = new User
-//            {
-//                UserID = userId,
-//                Email = "test@example.com",
-//                Password = "NewPassword"
-//            };
+            // Act
+            var result = await userRepository.UpdateUser(user.UserID, updatedUser);
 
-//            await context.User.AddAsync(existingUser);
-//            await context.SaveChangesAsync();
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal("new@example.com", EncryptionHelper.Decrypt(result.Email));
+            Assert.Equal("Alice", result.FName);  // Unchanged
+            Assert.Equal("Smith", result.LName);  // Unchanged
+        }
 
-//            // Act
-//            var result = await userRepository.UpdateUser(userId, updatedUser);
+        [Fact]
+        public async Task UpdateUser_ShouldHashPassword_WhenPasswordChanges()
+        {
+            // Arrange
+            int userId = 1;
+            var existingUser = new User
+            {
+                UserID = userId,
+                Email = "test@example.com",
+                Password = BCrypt.Net.BCrypt.HashPassword("OldPassword")
+            };
 
-//            // Assert
-//            Assert.NotNull(result);
-//            Assert.True(BCrypt.Net.BCrypt.Verify("NewPassword", result.Password));
-//        }
-//    }
-//}
+            var updatedUser = new User
+            {
+                UserID = userId,
+                Email = "test@example.com",
+                Password = "NewPassword"
+            };
+
+            await context.User.AddAsync(existingUser);
+            await context.SaveChangesAsync();
+
+            // Act
+            var result = await userRepository.UpdateUser(userId, updatedUser);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.True(BCrypt.Net.BCrypt.Verify("NewPassword", result.Password));
+        }
+
+        [Fact]
+        public async Task DeleteUser_ShouldReturnNull_WhenUserDoesNotExist()
+        {
+            // Arrange
+            await context.Database.EnsureDeletedAsync();
+
+            // Act
+            var result = await userRepository.DeleteUser(99);  // Non-existent ID
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task CreateUser_ShouldStoreHashedPassword()
+        {
+            // Arrange
+            await context.Database.EnsureDeletedAsync();
+
+            var user = new User
+            {
+                UserID = 1,
+                Email = "secure@example.com",
+                Password = "PlainTextPassword123"
+            };
+
+            // Act
+            var result = await userRepository.CreateLogin(user);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotEqual("PlainTextPassword123", result.Password);  // Verify password is hashed
+            Assert.True(BCrypt.Net.BCrypt.Verify("PlainTextPassword123", result.Password));  // Verify hash
+        }
+    }
+}

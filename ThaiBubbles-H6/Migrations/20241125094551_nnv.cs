@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ThaiBubbles_H6.Migrations
 {
     /// <inheritdoc />
-    public partial class Innv : Migration
+    public partial class nnv : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -102,7 +102,7 @@ namespace ThaiBubbles_H6.Migrations
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNr = table.Column<int>(type: "int", nullable: false),
+                    PhoneNr = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FavoriteId = table.Column<int>(type: "int", nullable: true),
                     CityId = table.Column<int>(type: "int", nullable: true),

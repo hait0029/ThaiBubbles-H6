@@ -1,106 +1,103 @@
-﻿//using Microsoft.AspNetCore.Identity.Data;
-//using ThaiBubbles_H6.Model;
 
-//namespace ProjectUnitTests.Controllers
-//{
-//    public class UserControllerTest
-//    {
-//        private readonly UserController userController;
-//        private Mock<IUserRepositories> UserRepositoryMock = new();
+﻿using Microsoft.AspNetCore.Identity.Data;
+using ThaiBubbles_H6.Model;
 
-//        public UserControllerTest()
-//        {
-//            userController = new UserController(UserRepositoryMock.Object);
-//        }
+namespace ThaiBubbles_H6.Tests.Controllers
+{
+    public class UserControllerTest
+    {
+        private readonly UserController userController;
+        private Mock<IUserRepositories> UserRepositoryMock = new();
+        private readonly Mock<DatabaseContext> dbContextMock = new();
 
-//        [Fact]
-//        public async Task GetAll_ShouldReturnStatusCode200_WhenUsersExist()
-//        {
-//            // Arrange
-//            var users = new List<User>
-//            {
-//                new User { UserID = 1, FName = "John", LName = "Doe", Address = "123 Main St", PhoneNr = "1234567890" },
-//                new User { UserID = 2, FName = "Jane", LName = "Smith", Address = "456 Elm St", PhoneNr = "0987654321" }
-//            };
+        public UserControllerTest()
+        {
+            userController = new UserController(UserRepositoryMock.Object, dbContextMock.Object);
+        }
 
-//            UserRepositoryMock.Setup(repo => repo.GetAllUsers()).ReturnsAsync(users);
+        [Fact]
+        public async Task GetAll_ShouldReturnStatusCode200_WhenUsersExist()
+        {
+            // Arrange
+            var users = new List<User>
+            {
+                new User { UserID = 1, FName = "John", LName = "Doe", Address = "123 Main St", PhoneNr = "1234567890" },
+                new User { UserID = 2, FName = "Jane", LName = "Smith", Address = "456 Elm St", PhoneNr = "0987654321" }
+            };
 
-//            // Act
-//            var result = (IStatusCodeActionResult)await userController.getUsers();
+            UserRepositoryMock.Setup(repo => repo.GetAllUsers()).ReturnsAsync(users);
 
-//            // Assert
-//            Assert.Equal(200, result.StatusCode);
-//        }
+            // Act
+            var result = (IStatusCodeActionResult)await userController.getUsers();
 
-//        [Fact]
-//        public async Task Authenticate_ShouldReturnJWTToken_WhenCredentialsAreValid()
-//        {
-//            // Arrange
-//            string email = "test@example.com";
-//            string password = "Password123";
-//            string token = "mock.jwt.token";
+            // Assert
+            Assert.Equal(200, result.StatusCode);
+        }
 
-//            UserRepositoryMock.Setup(repo => repo.AuthenticateAsync(email, password)).ReturnsAsync(token);
+        [Fact]
+        public async Task UpdateUser_ShouldHashPassword_WhenPasswordChanges()
+        {
+            // Arrange
+            int userId = 1;
+            var existingUser = new User { UserID = userId, Password = BCrypt.Net.BCrypt.HashPassword("OldPassword") };
+            var updatedUser = new User { UserID = userId, Password = "NewPassword" };
 
-//            // Act
-//            var result = await userController.Authenticate(new LoginRequest { Email = email, Password = password });
+            UserRepositoryMock.Setup(repo => repo.GetUserById(userId)).ReturnsAsync(existingUser);
+            UserRepositoryMock.Setup(repo => repo.UpdateUser(userId, It.IsAny<User>())).ReturnsAsync(updatedUser);
 
-//            // Assert
-//            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-//            Assert.Equal(200, okResult.StatusCode);
-//            Assert.Equal(token, okResult.Value);
-//        }
+            // Act
+            var result = (IStatusCodeActionResult)await userController.PutUser(userId, updatedUser);
 
-//        [Fact]
-//        public async Task Authenticate_ShouldReturnUnauthorized_WhenCredentialsAreInvalid()
-//        {
-//            // Arrange
-//            string email = "test@example.com";
-//            string password = "WrongPassword";
+            // Assert
+            Assert.Equal(200, result.StatusCode);
+            //UserRepositoryMock.Verify(repo => repo.UpdateUser(userId, It.Is<User>(u => BCrypt.Net.BCrypt.Verify("NewPassword", u.Password))), Times.Once);
+        }
 
-//            UserRepositoryMock.Setup(repo => repo.AuthenticateAsync(email, password)).ReturnsAsync((string?)null);
+        [Fact]
+        public async Task Delete_ShouldReturnStatusCode200_WhenUserIsDeleted()
+        {
+            // Arrange
+            int userId = 1;
+            var user = new User { UserID = userId, FName = "John", LName = "Doe" };
 
-//            // Act
-//            var result = await userController.Authenticate(new LoginRequest { Email = email, Password = password });
+            UserRepositoryMock.Setup(repo => repo.DeleteUser(userId)).ReturnsAsync(user);
 
-//            // Assert
-//            var unauthorizedResult = Assert.IsType<UnauthorizedResult>(result.Result);
-//            Assert.Equal(401, unauthorizedResult.StatusCode);
-//        }
+            // Act
+            var result = (IStatusCodeActionResult)await userController.DeleteUser(userId);
 
-//        [Fact]
-//        public async Task UpdateUser_ShouldHashPassword_WhenPasswordChanges()
-//        {
-//            // Arrange
-//            int userId = 1;
-//            var existingUser = new User { UserID = userId, Password = BCrypt.Net.BCrypt.HashPassword("OldPassword") };
-//            var updatedUser = new User { UserID = userId, Password = "NewPassword" };
+            // Assert
+            Assert.Equal(200, result.StatusCode);
+        }
 
-//            UserRepositoryMock.Setup(repo => repo.GetUserById(userId)).ReturnsAsync(existingUser);
-//            UserRepositoryMock.Setup(repo => repo.UpdateUser(userId, It.IsAny<User>())).ReturnsAsync(updatedUser);
+        [Fact]
+        public async Task Delete_ShouldReturnStatusCode404_WhenUserDoesNotExist()
+        {
+            // Arrange
+            int userId = 1;
 
-//            // Act
-//            var result = (IStatusCodeActionResult)await userController.PutUser(updatedUser, userId);
+            UserRepositoryMock.Setup(repo => repo.DeleteUser(userId)).ReturnsAsync((User)null);
 
-//            // Assert
-//            Assert.Equal(200, result.StatusCode);
-//            UserRepositoryMock.Verify(repo => repo.UpdateUser(userId, It.Is<User>(u => BCrypt.Net.BCrypt.Verify("NewPassword", u.Password))), Times.Once);
-//        }
+            // Act
+            var result = (IStatusCodeActionResult)await userController.DeleteUser(userId);
 
-//        [Fact]
-//        public async Task Delete_ShouldReturnStatusCode200_WhenUserIsDeleted()
-//        {
-//            // Arrange
-//            int userId = 1;
-//            var user = new User { UserID = userId, FName = "John", LName = "Doe" };
+            // Assert
+            Assert.Equal(404, result.StatusCode);
+        }
 
-//            UserRepositoryMock.Setup(repo => repo.DeleteUser(userId)).ReturnsAsync(user);
+        [Fact]
+        public async Task Delete_ShouldReturnStatusCode500_WhenExceptionIsThrown()
+        {
+            // Arrange
+            int userId = 1;
 
-//            // Act
-//            var result = (IStatusCodeActionResult)await userController.DeleteUser(userId);
+            UserRepositoryMock.Setup(repo => repo.DeleteUser(userId)).ThrowsAsync(new Exception("Delete failed"));
 
-//            // Assert
-//            Assert.Equal(200, result.StatusCode);
-//        }
-//    }
-//}
+            // Act
+            var result = (IStatusCodeActionResult)await userController.DeleteUser(userId);
+
+            // Assert
+            Assert.Equal(500, result.StatusCode);
+        }
+    }
+}
+

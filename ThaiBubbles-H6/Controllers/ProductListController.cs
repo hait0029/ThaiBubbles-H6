@@ -56,7 +56,7 @@
             {
                 var ProductListResult = await _productListRepo.UpdateProductOrderList(productlistId, productlist);
 
-                if (productlist == null)
+                if (ProductListResult == null)
                 {
                     return NotFound($"ProductList with id {productlistId} was not found");
                 }
