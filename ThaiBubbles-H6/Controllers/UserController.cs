@@ -38,7 +38,7 @@ namespace ThaiBubbles_H6.Controllers
                 bool isPasswordValid = BCrypt.Net.BCrypt.Verify(logins.Password, user.Password);
                 if (!isPasswordValid)
                 {
-                    return Unauthorized(new { message = "invalid password hash" });
+                    return Unauthorized(new { message = "Invalid email or password" });
                 }
 
                 // Call your repository to generate the JWT token

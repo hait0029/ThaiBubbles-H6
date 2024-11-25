@@ -1,4 +1,5 @@
-﻿using ThaiBubbles_H6.Helper;
+﻿using System.ComponentModel;
+using ThaiBubbles_H6.Helper;
 
 namespace ThaiBubbles_H6.Repositories
 {
@@ -18,7 +19,7 @@ namespace ThaiBubbles_H6.Repositories
         public async Task<string?> AuthenticateAsync(string email, string password)
         {
             var user = await GetLoginByEmailAsync(email);
-
+            // Check if the user exists and the password is correct
             if (user == null || !VerifyPassword(password, user.Password))
                 return null;
 
@@ -89,6 +90,11 @@ namespace ThaiBubbles_H6.Repositories
             }
 
             // Hash the password before saving
+            // hashing example $2b$12$4F6ksTQcVqlsPsvL2RR7ge76z.UhPZdu43RCkKEDGoe43pVDFfxUi
+
+            //$2b$: Indicates bcrypt is being used.
+            //12: The cost factor(how computationally expensive the hashing is).
+            //4F6ksTQcVqls...: This part contains the salt and the hash.
             string salt = BCrypt.Net.BCrypt.GenerateSalt(); // I made this change
             newLogin.Password = BCrypt.Net.BCrypt.HashPassword(newLogin.Password, salt);
 
