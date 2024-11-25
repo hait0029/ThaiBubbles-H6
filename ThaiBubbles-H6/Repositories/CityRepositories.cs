@@ -38,7 +38,7 @@ namespace ThaiBubbles_H6.Repositories
             }
 
             // Proceed to update the city if it exists
-            city.CityID = updatecity.CityID;
+            //city.CityID = updatecity.CityID;
             city.CityName = updatecity.CityName;
             city.ZIPCode = updatecity.ZIPCode;
 

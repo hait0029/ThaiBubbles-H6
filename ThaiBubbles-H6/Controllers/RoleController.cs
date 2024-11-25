@@ -56,7 +56,7 @@
             {
                 var roleResult = await _roleRepo.UpdateRole(roleId, role);
 
-                if (role == null)
+                if (roleResult == null)
                 {
                     return NotFound($"Role with id {roleId} was not found");
                 }
