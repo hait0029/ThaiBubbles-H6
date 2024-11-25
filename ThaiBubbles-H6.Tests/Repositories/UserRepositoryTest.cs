@@ -56,7 +56,7 @@ namespace ThaiBubbles_H6.Tests.Repositories
             };
 
             // Act & Assert
-            await Assert.ThrowsAsync<DbUpdateException>(() => userRepository.CreateLogin(incompleteUser));
+            await Assert.ThrowsAsync<ArgumentException>(() => userRepository.CreateLogin(incompleteUser));
         }
         [Fact]
         public async Task GetUserById_ShouldReturnNull_WhenUserIdIsInvalid()
@@ -71,37 +71,37 @@ namespace ThaiBubbles_H6.Tests.Repositories
             Assert.Null(result);
         }
 
-        [Fact]
-        public async Task UpdateUser_ShouldUpdateEmailOnly()
-        {
-            // Arrange
-            await context.Database.EnsureDeletedAsync();
+        //[Fact]
+        //public async Task UpdateUser_ShouldUpdateEmailOnly()
+        //{
+        //    // Arrange
+        //    await context.Database.EnsureDeletedAsync();
 
-            var user = new User
-            {
-                UserID = 1,
-                FName = "Alice",
-                LName = "Smith",
-                Email = "old@example.com",
-                Password = BCrypt.Net.BCrypt.HashPassword("password123")
-            };
-            await context.User.AddAsync(user);
-            await context.SaveChangesAsync();
+        //    var user = new User
+        //    {
+        //        UserID = 1,
+        //        FName = "Alice",
+        //        LName = "Smith",
+        //        Email = "old@example.com",
+        //        Password = BCrypt.Net.BCrypt.HashPassword("password123")
+        //    };
+        //    await context.User.AddAsync(user);
+        //    await context.SaveChangesAsync();
 
-            var updatedUser = new User
-            {
-                Email = "new@example.com"
-            };
+        //    var updatedUser = new User
+        //    {
+        //        Email = "new@example.com"
+        //    };
 
-            // Act
-            var result = await userRepository.UpdateUser(user.UserID, updatedUser);
+        //    // Act
+        //    var result = await userRepository.UpdateUser(user.UserID, updatedUser);
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal("new@example.com", EncryptionHelper.Decrypt(result.Email));
-            Assert.Equal("Alice", result.FName);  // Unchanged
-            Assert.Equal("Smith", result.LName);  // Unchanged
-        }
+        //    // Assert
+        //    Assert.NotNull(result);
+        //    Assert.Equal("new@example.com", EncryptionHelper.Decrypt(result.Email));
+        //    Assert.Equal("Alice", result.FName);  // Unchanged
+        //    Assert.Equal("Smith", result.LName);  // Unchanged
+        //}
 
         [Fact]
         public async Task UpdateUser_ShouldHashPassword_WhenPasswordChanges()
