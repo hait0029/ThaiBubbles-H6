@@ -12,8 +12,8 @@ using ThaiBubbles_H6.Database;
 namespace ThaiBubbles_H6.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241125094551_nnv")]
-    partial class nnv
+    [Migration("20241125123738_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,6 +104,56 @@ namespace ThaiBubbles_H6.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Login");
+                });
+
+            modelBuilder.Entity("ThaiBubbles_H6.Model.Order", b =>
+                {
+                    b.Property<int>("OrderID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"));
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("ThaiBubbles_H6.Model.Product", b =>
+                {
+                    b.Property<int>("ProductID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductID"));
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductID");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("ThaiBubbles_H6.Model.ProductList", b =>
@@ -199,56 +249,6 @@ namespace ThaiBubbles_H6.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("ThaiBubbles_h6.Model.Order", b =>
-                {
-                    b.Property<int>("OrderID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"));
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrderID");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Order");
-                });
-
-            modelBuilder.Entity("ThaiBubbles_h6.Model.Product", b =>
-                {
-                    b.Property<int>("ProductID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductID"));
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductID");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Product");
-                });
-
             modelBuilder.Entity("ThaiBubbles_H6.Model.Favorite", b =>
                 {
                     b.HasOne("ThaiBubbles_H6.Model.User", "UserFK")
@@ -267,13 +267,31 @@ namespace ThaiBubbles_H6.Migrations
                     b.Navigation("RoleType");
                 });
 
+            modelBuilder.Entity("ThaiBubbles_H6.Model.Order", b =>
+                {
+                    b.HasOne("ThaiBubbles_H6.Model.User", "user")
+                        .WithMany("Order")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("ThaiBubbles_H6.Model.Product", b =>
+                {
+                    b.HasOne("ThaiBubbles_H6.Model.Category", "category")
+                        .WithMany("product")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("category");
+                });
+
             modelBuilder.Entity("ThaiBubbles_H6.Model.ProductList", b =>
                 {
-                    b.HasOne("ThaiBubbles_h6.Model.Order", "Orders")
+                    b.HasOne("ThaiBubbles_H6.Model.Order", "Orders")
                         .WithMany("orderlists")
                         .HasForeignKey("OrderId");
 
-                    b.HasOne("ThaiBubbles_h6.Model.Product", "Products")
+                    b.HasOne("ThaiBubbles_H6.Model.Product", "Products")
                         .WithMany("orderlists")
                         .HasForeignKey("ProductId");
 
@@ -297,24 +315,6 @@ namespace ThaiBubbles_H6.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("ThaiBubbles_h6.Model.Order", b =>
-                {
-                    b.HasOne("ThaiBubbles_H6.Model.User", "user")
-                        .WithMany("Order")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("ThaiBubbles_h6.Model.Product", b =>
-                {
-                    b.HasOne("ThaiBubbles_H6.Model.Category", "category")
-                        .WithMany("product")
-                        .HasForeignKey("CategoryId");
-
-                    b.Navigation("category");
-                });
-
             modelBuilder.Entity("ThaiBubbles_H6.Model.Category", b =>
                 {
                     b.Navigation("product");
@@ -323,6 +323,16 @@ namespace ThaiBubbles_H6.Migrations
             modelBuilder.Entity("ThaiBubbles_H6.Model.City", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ThaiBubbles_H6.Model.Order", b =>
+                {
+                    b.Navigation("orderlists");
+                });
+
+            modelBuilder.Entity("ThaiBubbles_H6.Model.Product", b =>
+                {
+                    b.Navigation("orderlists");
                 });
 
             modelBuilder.Entity("ThaiBubbles_H6.Model.Role", b =>
@@ -335,16 +345,6 @@ namespace ThaiBubbles_H6.Migrations
                     b.Navigation("FavoriteFk");
 
                     b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("ThaiBubbles_h6.Model.Order", b =>
-                {
-                    b.Navigation("orderlists");
-                });
-
-            modelBuilder.Entity("ThaiBubbles_h6.Model.Product", b =>
-                {
-                    b.Navigation("orderlists");
                 });
 #pragma warning restore 612, 618
         }

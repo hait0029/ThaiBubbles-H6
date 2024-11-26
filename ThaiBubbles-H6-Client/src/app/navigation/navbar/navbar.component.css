@@ -10,7 +10,7 @@
 }
 
 a:hover {
-  color: red;
+  color: #ff0000;
 }
 
 a:link {
@@ -18,7 +18,7 @@ a:link {
 }
 
 a {
-  color: white;
+  color: #ffffff;
   font-size: 26px;
   font-family: Georgia, 'palatino', 'book antiqua', 'palatino linotype', 'serif';
   padding: 0 1rem;
@@ -59,7 +59,7 @@ button {
   background-color: transparent; /* Green background */
   border: none;
   padding: 8px 16px;
-  color: white;
+  color: #ffffff;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -71,7 +71,7 @@ button i {
 button svg {
   width: 20px; /* Adjust the size of the SVG */
   height: 20px;
-  fill: white; /* Change the color of the icon */
+  fill: #ffffff; /* Change the color of the icon */
 }
 
 .nav-item a {

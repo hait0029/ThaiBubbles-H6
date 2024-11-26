@@ -47,7 +47,7 @@ namespace ThaiBubbles_H6.Controllers
                 // If token is null, return Unauthorized
                 if (token == null)
                 {
-                    return Unauthorized(new { message = "Invalid email or password" });
+                    return Unauthorized(new { message = "unautherized" });
                 }
 
                 // Return the token if authentication is successful
